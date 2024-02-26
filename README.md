@@ -1,7 +1,10 @@
 Features:
 Basic Task Management: create, edit, delete, and mark tasks as finished.
+
 Search Functionality: search tasks by date, name, and category.
-App Sections: view ongoing and upcoming tasks
+
+App Sections: view ongoing and upcoming task and also calendar table to search for tasks
+
 User Identity and Preferences: home top bar background, profile picture, display name, brightness theme, summary of tasks, history of user activity.
 
 Third Party Packages Dependencies & Development Dependencies:
