@@ -11,6 +11,9 @@
 - **App Sections:**
   - View ongoing and upcoming tasks.
   - Calendar table to search for tasks.
+  - Detail screen of every task
+  - Create task sheet
+  - About me screen in end drawer
 
 - **User Identity and Preferences:**
   - Home top bar background.
