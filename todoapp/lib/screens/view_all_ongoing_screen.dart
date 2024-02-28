@@ -79,7 +79,7 @@ class ViewAllOngoingScreen extends StatelessWidget {
               'deadline' : DateTime(deadline.year, deadline.month, deadline.day)
                             == DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1))
                             ? 'Today'
-                            : DateFormat('MMM, EEEE dd').format(deadline),
+                            : DateFormat('MMMM, EEEE dd').format(deadline),
               'tasks' : tasksSorted
             };
           }
