@@ -1,8 +1,6 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, use_build_context_synchronously, non_constant_identifier_names, prefer_const_constructors
 
-import 'dart:io';
 import 'dart:typed_data';
-
 import 'package:todoapp/data/database.dart';
 import 'package:todoapp/logic/task_list_cubit.dart';
 import 'package:todoapp/logic/user_cubit.dart';
@@ -57,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
             background: Container(
               padding: EdgeInsets.symmetric(horizontal: phoneWidth / 50),
               decoration: BoxDecoration(
-                  image: state.user.homeTopBarBG != Uint8List(0)
+                  image: state.user.homeTopBarBG != ''
                     ? DecorationImage(
                         image: MemoryImage(Uint8List.fromList(state.user.homeTopBarBG.codeUnits)),
                       fit: BoxFit.fitWidth) : null),

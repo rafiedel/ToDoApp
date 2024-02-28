@@ -1,8 +1,6 @@
 // ignore_for_file: sized_box_for_whitespace
 
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/data/database.dart';
-import 'package:todoapp/logic/history_cubit.dart';
 import 'package:todoapp/screens/detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';

@@ -28,17 +28,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
-      File? _imgFile = File(pickedFile.path);
-      Uint8List _imgBytes = _imgFile.readAsBytesSync();
-      String _imgStrings  = String.fromCharCodes(_imgBytes);
-      // img = await cropImage(imageFile: img);
-      // String path = img!.path;
+      File? imgFile = File(pickedFile.path);
+      File? imgCropped = await cropImage(imageFile: imgFile);
+      Uint8List imgBytes = imgCropped!.readAsBytesSync();
+      String imgStrings  = String.fromCharCodes(imgBytes);
       setState(() {
         if (whichImage == 'pp') {
-          BlocProvider.of<UserCubit>(context).changeProfilePicture(_imgStrings);
+          BlocProvider.of<UserCubit>(context).changeProfilePicture(imgStrings);
         }
         else {
-          BlocProvider.of<UserCubit>(context).changeHomeTopBarBG(_imgStrings);
+          BlocProvider.of<UserCubit>(context).changeHomeTopBarBG(imgStrings);
         }
       });
     }
@@ -71,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: <Widget>[
             BlocBuilder<UserCubit, UserState>(
               builder: (context, state) {
-                if (state.user.profilePicture != Uint8List(0)) {
+                if (state.user.profilePicture != '') {
                    return CircleAvatar(
                     radius: phoneWidth / 5,
                     backgroundImage: MemoryImage(Uint8List.fromList(state.user.profilePicture.codeUnits)),
@@ -164,7 +163,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           child: GestureDetector(
                             onTap: () {
                               List<Task> tasksToShow = summary[key]!;
-                              if (tasksToShow.length != 0 && key != 'NOT YET') {
+                              if (tasksToShow.isNotEmpty && key != 'NOT YET') {
                                 Navigator.push(
                                   context, 
                                   MaterialPageRoute(builder: (BuildContext context) => ViewSummaryTask(tasks: tasksToShow, tasksTitle: key,))
@@ -318,7 +317,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: const Text('Display Home App Bar BackGround'),
           trailing: GestureDetector(
               onTap: () => pickImageFromGallery('bg'),
-              child: Text(state.user.homeTopBarBG != File('')
+              child: Text(state.user.homeTopBarBG != ''
                   ? 'set'
                   : 'not set')),
         );
@@ -334,7 +333,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: const Text('Display Profile Picture'),
           trailing: GestureDetector(
               onTap: () => pickImageFromGallery('pp'),
-              child: Text(state.user.homeTopBarBG != File('')
+              child: Text(state.user.homeTopBarBG != ''
                   ? 'set'
                   : 'not set')),
         );

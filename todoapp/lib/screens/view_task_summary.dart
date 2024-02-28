@@ -20,7 +20,7 @@ class ViewSummaryTask extends StatelessWidget {
       body: ListView(
         children: [
           ListView.builder(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             shrinkWrap: true,
             itemCount: tasks.length,
             itemBuilder: (context,index) {

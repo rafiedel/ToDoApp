@@ -23,7 +23,7 @@ class CreateTaskCubit extends Cubit<CreateTaskState>{
       isDone: false, 
       isTopPriority: false,
       starts: DateTime.now(), 
-      ends: DateTime.now().add(const Duration(days: 1)), 
+      ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)), 
       category: ''
       )
     )

@@ -302,7 +302,7 @@ class _CreateTaskButton extends State<CreateTaskButton> {
       lastDate: DateTime(2030),
     ).then((result) {
       if (whichDate == 'ends') {
-        BlocProvider.of<CreateTaskCubit>(context).setEnds(result!);
+        BlocProvider.of<CreateTaskCubit>(context).setEnds(DateTime(result!.year, result.month, result.day));
       } else if (whichDate == 'starts') {
         BlocProvider.of<CreateTaskCubit>(context).setStarts(result!);
       }
