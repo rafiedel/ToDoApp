@@ -486,23 +486,23 @@ void loadData() {
     currentUser = loadedUser;
     if (DateTime(currentUser.lastLogin.year, currentUser.lastLogin.month, currentUser.lastLogin.day)
             .isBefore(DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day))) {
-              taskList = taskList.map(
-                (Task task) {
-                  if (task.category == 'Daily') {
-                    return Task(
-                    id: task.id, 
-                    name: task.name, 
-                    description: task.description, 
-                    isDone: false, 
-                    isTopPriority: task.isTopPriority, 
-                    starts: task.starts, 
-                    ends: task.ends, 
-                    category: task.category 
-                    );
-                  }
-                  return task;
-                }
-              ).toList();
+      taskList = taskList.map(
+        (Task task) {
+          if (task.category == 'Daily') {
+            return Task(
+            id: task.id, 
+            name: task.name, 
+            description: task.description, 
+            isDone: false, 
+            isTopPriority: task.isTopPriority, 
+            starts: task.starts, 
+            ends: task.ends, 
+            category: task.category 
+            );
+          }
+          return task;
+        }
+      ).toList();
     }
     currentUser = User(
       displayName: currentUser.displayName, 
