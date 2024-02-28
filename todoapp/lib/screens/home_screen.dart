@@ -211,9 +211,8 @@ class _HomeScreenState extends State<HomeScreen> {
             maxItems = tasksSorted.length.toDouble();
           }
           return {
-            'startsAt': starts.year == DateTime.now().year &&
-                    starts.month == DateTime.now().month &&
-                    starts.day == DateTime.now().add(Duration(days: 1)).day
+            'startsAt': DateTime(starts.year, starts.month, starts.day)   
+                          == DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(Duration(days: 1))
                 ? 'Tomorrow'
                 : DateFormat('MMM, EEEE dd').format(starts),
             'tasks': tasksSorted

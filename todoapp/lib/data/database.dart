@@ -84,7 +84,7 @@ void initialData() {
       id: 1,
       name: 'Ristek Mobdev Oprec Assignment',
       description: 'Finish the application for the Ristek MobDev recruitment process.',
-      isDone: false,
+      isDone: true,
       isTopPriority: true,
       starts: DateTime(2024, 2, 19),
       ends: DateTime(2024, 3, 2),

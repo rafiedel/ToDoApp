@@ -76,9 +76,8 @@ class ViewAllOngoingScreen extends StatelessWidget {
               }
             ).toList();
             return {
-              'deadline' : deadline.year == DateTime.now().year && 
-                           deadline.month == DateTime.now().month &&
-                           deadline.day == DateTime.now().add(const Duration(days: 1)).day 
+              'deadline' : DateTime(deadline.year, deadline.month, deadline.day)
+                            == DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1))
                             ? 'Today'
                             : DateFormat('MMM, EEEE dd').format(deadline),
               'tasks' : tasksSorted
