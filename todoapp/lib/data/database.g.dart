@@ -118,19 +118,22 @@ class UserAdapter extends TypeAdapter<User> {
       displayName: fields[0] as String,
       profilePicture: fields[1] as String,
       homeTopBarBG: fields[2] as String,
+      lastLogin: fields[3] as DateTime,
     );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.displayName)
       ..writeByte(1)
       ..write(obj.profilePicture)
       ..writeByte(2)
-      ..write(obj.homeTopBarBG);
+      ..write(obj.homeTopBarBG)
+      ..writeByte(3)
+      ..write(obj.lastLogin);
   }
 
   @override

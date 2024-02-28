@@ -59,11 +59,14 @@ class User{
   String profilePicture;
   @HiveField(2)
   String homeTopBarBG;
+  @HiveField(3)
+  DateTime lastLogin;
 
   User({
     required this.displayName,
     required this.profilePicture,
-    required this.homeTopBarBG
+    required this.homeTopBarBG,
+    required this.lastLogin
   });
 }
 
@@ -71,7 +74,7 @@ class User{
 List<Task> sampleTaskList= [];
 List<Task> taskList = [];
 List<History> userHistoryList = [];
-User currentUser = User(displayName: 'User', profilePicture: '' ,homeTopBarBG: '');
+User currentUser = User(displayName: 'User', profilePicture: '' ,homeTopBarBG: '', lastLogin: DateTime.now());
 
 final myBox = Hive.box('mybox');
 
@@ -481,6 +484,32 @@ void loadData() {
     taskList = List<Task>.from(loadedTasks);
     userHistoryList = List<History>.from(loadedHistory);
     currentUser = loadedUser;
+    if (DateTime(currentUser.lastLogin.year, currentUser.lastLogin.month, currentUser.lastLogin.day)
+            .isBefore(DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day))) {
+              taskList = taskList.map(
+                (Task task) {
+                  if (task.category == 'Daily') {
+                    return Task(
+                    id: task.id, 
+                    name: task.name, 
+                    description: task.description, 
+                    isDone: false, 
+                    isTopPriority: task.isTopPriority, 
+                    starts: task.starts, 
+                    ends: task.ends, 
+                    category: task.category 
+                    );
+                  }
+                  return task;
+                }
+              ).toList();
+    }
+    currentUser = User(
+      displayName: currentUser.displayName, 
+      profilePicture: currentUser.profilePicture, 
+      homeTopBarBG: currentUser.homeTopBarBG, 
+      lastLogin: DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day)
+    );
   }
 }
 
@@ -490,31 +519,3 @@ void saveData() {
   myBox.put('currentUser', currentUser);
 }
 
-Future<void> refreshDailyTask() async {
-  try {
-    List<dynamic>? loadedTasks = myBox.get('taskList');
-    if (loadedTasks != null) {
-      taskList = List<Task>.from(loadedTasks);
-      taskList.map(
-        (Task task) {
-          if (task.category == 'Daily') {
-            return Task(
-            id: task.id, 
-            name: task.name, 
-            description: task.description, 
-            isDone: false, 
-            isTopPriority: task.isTopPriority, 
-            starts: task.starts, 
-            ends: task.ends, 
-            category: task.category 
-            );
-          }
-          return task;
-        }
-      ).toList();
-      myBox.put('taskList', taskList);
-    }
-  } catch (e) {
-    throw Error();
-  }
-}

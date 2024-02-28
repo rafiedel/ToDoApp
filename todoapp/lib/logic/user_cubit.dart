@@ -20,7 +20,8 @@ class UserCubit extends Cubit<UserState>{
         user: User(
           displayName: newName, 
           profilePicture: state.user.profilePicture, 
-          homeTopBarBG: state.user.homeTopBarBG
+          homeTopBarBG: state.user.homeTopBarBG,
+          lastLogin: state.user.lastLogin
         )
       )
     );
@@ -31,7 +32,12 @@ class UserCubit extends Cubit<UserState>{
   void changeProfilePicture(String newImage) {
     emit(
       UserState(
-        user: User(displayName: state.user.displayName, profilePicture: newImage, homeTopBarBG: state.user.homeTopBarBG)
+        user: User(
+          displayName: state.user.displayName, 
+          profilePicture: newImage, 
+          homeTopBarBG: state.user.homeTopBarBG, 
+          lastLogin:  state.user.lastLogin
+        )
       )
     );
     saveData();
@@ -40,7 +46,12 @@ class UserCubit extends Cubit<UserState>{
   void changeHomeTopBarBG(String newImage) {
      emit(
       UserState(
-        user: User(displayName: state.user.displayName, profilePicture: state.user.profilePicture, homeTopBarBG: newImage)
+        user: User(
+          displayName: state.user.displayName, 
+          profilePicture: state.user.profilePicture, 
+          homeTopBarBG: newImage, 
+          lastLogin:  state.user.lastLogin
+        )
       )
     );
     saveData();

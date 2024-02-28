@@ -7,7 +7,6 @@ import 'package:todoapp/logic/task_list_cubit.dart';
 import 'package:todoapp/logic/theme_cubit.dart';
 import 'package:todoapp/logic/user_cubit.dart';
 import 'package:todoapp/router/main_screen_navigator.dart';
-import 'package:cron/cron.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,11 +16,6 @@ import 'package:hive_flutter/adapters.dart';
 void main() async{
 
   WidgetsFlutterBinding.ensureInitialized();
-
-  final cron = Cron();
-  cron.schedule(Schedule.parse('0 3 * * *'), () async {
-    await refreshDailyTask();
-  });
 
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp  
