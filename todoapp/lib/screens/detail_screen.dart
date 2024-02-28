@@ -186,7 +186,7 @@ class _DetailScrenState extends State<DetailScren> {
                                             (checkTask) =>
                                                 checkTask.id == task.id);
                                         BlocProvider.of<HistoryCubit>(context)
-                                            .updateTask(task.name);
+                                            .updateTask(task.name, task.id);
                                         taskList[targetedIndex] = Task(
                                             id: task.id,
                                             name: _nameController.text,
@@ -428,13 +428,16 @@ class _DetailScrenState extends State<DetailScren> {
     double phoneWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<EditTaskCubit, EditTaskState>(
       builder: (context, state) {
-        if (DateTime.now().isBefore(state.task.starts)) {
+        if (DateTime.now().isBefore(state.task.starts) && state.task.isDone == false) {
           timesLeft = state.task.starts.difference(DateTime.now()).inMinutes;
           waitingFor = 'STARTS';
-        } else if (DateTime.now().isAfter(state.task.starts) && DateTime.now().isBefore(state.task.ends))  {
-          timesLeft = state.task.ends.difference(DateTime.now()).inDays;
+        } else if (DateTime.now().isAfter(state.task.starts) && DateTime.now().isBefore(state.task.ends) && state.task.isDone == false)  {
+          timesLeft = state.task.ends.difference(DateTime.now()).inMinutes;
           waitingFor = 'ENDS';
-        } else {
+        } else if (DateTime.now().isAfter(state.task.ends)){
+          timesLeft = DateTime.now().difference(state.task.ends).inMinutes;
+          waitingFor = 'LATE';
+        }else if (state.task.isDone == true){
           waitingFor = 'ENDED';
         }
         return Column(
@@ -449,9 +452,7 @@ class _DetailScrenState extends State<DetailScren> {
                     separatorStyle: TextStyle(
                         color: Theme.of(context).colorScheme.inversePrimary),
                     decoration: const BoxDecoration(),
-                    duration: waitingFor == 'STARTS'
-                        ? Duration(minutes: timesLeft)
-                        : Duration(days: timesLeft),
+                    duration: Duration(minutes: timesLeft),
                     style: const TextStyle(),
                   )
                 : const SizedBox.shrink(),
@@ -487,7 +488,7 @@ class _DetailScrenState extends State<DetailScren> {
                       actions: [
                         MaterialButton(
                           onPressed: () {
-                            BlocProvider.of<HistoryCubit>(context).deleteTask(task.name);
+                            BlocProvider.of<HistoryCubit>(context).deleteTask(task.name, task.id);
                             taskList.removeWhere((targetedTask) => targetedTask.id == task.id);
                             BlocProvider.of<TaskListCubit>(context).refreshTaskList();
                             BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
@@ -555,7 +556,7 @@ class _DetailScrenState extends State<DetailScren> {
                                 ends: state.task.ends,
                                 category: state.task.category);
                             BlocProvider.of<HistoryCubit>(context)
-                                .finishTask(state.task.name);
+                                .finishTask(state.task.name, task.id);
                             BlocProvider.of<TaskListCubit>(context).refreshTaskList();
                             BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
                             await Future.delayed(const Duration(seconds: 1));

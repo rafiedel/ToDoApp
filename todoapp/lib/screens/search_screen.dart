@@ -250,7 +250,9 @@ class _SearchScreenState extends State<SearchScreen> {
           itemCount: state.taskBeingSearched.length,
           itemBuilder: (context, index) {
             Task task = state.taskBeingSearched[index];
-            if (state.taskBeingSearched[index].category != 'Daily') {
+            if (state.taskBeingSearched[index].category != 'Daily' && 
+                state.taskBeingSearched[index].isDone != true &&
+                DateTime.now().isBefore(state.taskBeingSearched[index].ends)) {
               return GestureDetector(
                 onTap: () {
                   Navigator.push(

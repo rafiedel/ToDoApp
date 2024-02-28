@@ -469,7 +469,7 @@ class _CreateTaskButton extends State<CreateTaskButton> {
                   BlocProvider.of<TaskListCubit>(context).refreshTaskList();
                   BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
                   BlocProvider.of<CreateTaskCubit>(context).refreshState();
-                  BlocProvider.of<HistoryCubit>(context).createTask(_nameController.text);
+                  BlocProvider.of<HistoryCubit>(context).createTask(_nameController.text, newTaskState.newTask.id);
                   _nameController.clear();
                   _descriptionController.clear();
                   Navigator.pop(context);

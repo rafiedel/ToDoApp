@@ -1,3 +1,6 @@
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/data/database.dart';
 
@@ -19,8 +22,8 @@ class UserCubit extends Cubit<UserState>{
       UserState(
         user: User(
           displayName: newName, 
-          linkAppBarBG: state.user.linkAppBarBG, 
-          linkPfp: state.user.linkPfp
+          profilePicture: state.user.profilePicture, 
+          homeTopBarBG: state.user.homeTopBarBG
         )
       )
     );
@@ -28,31 +31,23 @@ class UserCubit extends Cubit<UserState>{
     saveData();
   }
 
-  void changePfp(String newLink) {
+  void changeProfilePicture(String newImage) {
     emit(
       UserState(
-        user: User(
-          displayName: state.user.displayName, 
-          linkAppBarBG: state.user.linkAppBarBG, 
-          linkPfp: newLink
-        )
+        user: User(displayName: state.user.displayName, profilePicture: newImage, homeTopBarBG: state.user.homeTopBarBG)
       )
     );
-    currentUser = state.user;
     saveData();
   }
 
-  void changeAppBarBG(String newLink) {
-    emit(
+  void changeHomeTopBarBG(String newImage) {
+     emit(
       UserState(
-        user: User(
-          displayName: state.user.displayName, 
-          linkAppBarBG: newLink, 
-          linkPfp: state.user.linkPfp
-        )
+        user: User(displayName: state.user.displayName, profilePicture: state.user.profilePicture, homeTopBarBG: newImage)
       )
     );
-    currentUser = state.user;
     saveData();
   }
+  
+
 }

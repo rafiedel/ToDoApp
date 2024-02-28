@@ -45,21 +45,22 @@ class CreateTaskCubit extends Cubit<CreateTaskState>{
         )
       )
     );
+    saveData();
   }
 
   void setStarts(DateTime newStartDate) {
     emit(CreateTaskState(
-            newTask: Task(
-              id: state.newTask.id, 
-              name: state.newTask.name, 
-              description: state.newTask.description, 
-              isDone: state.newTask.isDone, 
-              isTopPriority: state.newTask.isTopPriority,
-              starts: newStartDate, 
-              ends: newStartDate.add(const Duration(days: 1)), 
-              category: state.newTask.category
-            )
-          ));
+      newTask: Task(
+        id: state.newTask.id, 
+        name: state.newTask.name, 
+        description: state.newTask.description, 
+        isDone: state.newTask.isDone, 
+        isTopPriority: state.newTask.isTopPriority,
+        starts: newStartDate, 
+        ends: newStartDate.add(const Duration(days: 1)), 
+        category: state.newTask.category
+      )
+    ));
   }
 
   void setEnds(DateTime newEndDate) => emit(

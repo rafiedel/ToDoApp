@@ -75,19 +75,22 @@ class HistoryAdapter extends TypeAdapter<History> {
       taskName: fields[0] as String,
       action: fields[1] as String,
       when: fields[2] as DateTime,
+      id: fields[3] as int,
     );
   }
 
   @override
   void write(BinaryWriter writer, History obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.taskName)
       ..writeByte(1)
       ..write(obj.action)
       ..writeByte(2)
-      ..write(obj.when);
+      ..write(obj.when)
+      ..writeByte(3)
+      ..write(obj.id);
   }
 
   @override
@@ -113,8 +116,8 @@ class UserAdapter extends TypeAdapter<User> {
     };
     return User(
       displayName: fields[0] as String,
-      linkAppBarBG: fields[2] as String,
-      linkPfp: fields[1] as String,
+      profilePicture: fields[1] as String,
+      homeTopBarBG: fields[2] as String,
     );
   }
 
@@ -125,9 +128,9 @@ class UserAdapter extends TypeAdapter<User> {
       ..writeByte(0)
       ..write(obj.displayName)
       ..writeByte(1)
-      ..write(obj.linkPfp)
+      ..write(obj.profilePicture)
       ..writeByte(2)
-      ..write(obj.linkAppBarBG);
+      ..write(obj.homeTopBarBG);
   }
 
   @override

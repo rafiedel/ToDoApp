@@ -1,4 +1,6 @@
 
+import 'dart:io';
+import 'dart:typed_data';
 import 'package:hive/hive.dart';
 part 'database.g.dart';
 
@@ -41,11 +43,14 @@ class History {
   String action;
   @HiveField(2)
   DateTime when;
+  @HiveField(3)
+  int id;
 
   History({
     required this.taskName,
     required this.action,
-    required this.when
+    required this.when,
+    required this.id
   });
 }
 
@@ -54,14 +59,14 @@ class User{
   @HiveField(0)
   String displayName;
   @HiveField(1)
-  String linkPfp;
+  String profilePicture;
   @HiveField(2)
-  String linkAppBarBG;
+  String homeTopBarBG;
 
   User({
     required this.displayName,
-    required this.linkAppBarBG,
-    required this.linkPfp
+    required this.profilePicture,
+    required this.homeTopBarBG
   });
 }
 
@@ -69,7 +74,7 @@ class User{
 List<Task> sampleTaskList= [];
 List<Task> taskList = [];
 List<History> userHistoryList = [];
-User currentUser = User(displayName: 'User', linkAppBarBG: '', linkPfp: '');
+User currentUser = User(displayName: 'User', profilePicture: '' ,homeTopBarBG: '');
 
 final myBox = Hive.box('mybox');
 
@@ -395,6 +400,77 @@ void initialData() {
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       category: 'Daily',
     ),
+    Task(
+      id: 33,
+      name: 'Attend Webinar on AI',
+      description: 'Learn about the latest advancements in artificial intelligence.',
+      isDone: false,
+      isTopPriority: true,
+      starts: DateTime(2024, 1, 1),
+      ends: DateTime(2024, 1, 2),
+      category: 'Education',
+    ),
+    Task(
+      id: 34,
+      name: 'Explore New Recipes',
+      description: 'Experiment with cooking new dishes using exotic ingredients.',
+      isDone: false,
+      isTopPriority: false,
+      starts: DateTime(2024, 1, 1),
+      ends: DateTime(2024, 1, 2),
+      category: 'Food',
+    ),
+    Task(
+      id: 35,
+      name: 'Morning Jogging',
+      description: 'Go for a refreshing jog in the park to kickstart the day.',
+      isDone: false,
+      isTopPriority: false,
+      starts: DateTime(2024, 1, 1),
+      ends: DateTime(2024, 1, 2),
+      category: 'Health',
+    ),
+    Task(
+      id: 36,
+      name: 'Painting Session',
+      description: 'Express creativity through a relaxing painting session.',
+      isDone: false,
+      isTopPriority: false,
+      starts: DateTime(2024, 1, 1),
+      ends: DateTime(2024, 1, 2),
+      category: 'Hobby',
+    ),
+    Task(
+      id: 37,
+      name: 'Read Fiction Novel',
+      description: 'Immerse in an intriguing fiction novel to unwind.',
+      isDone: false,
+      isTopPriority: false,
+      starts: DateTime(2024, 1, 1),
+      ends: DateTime(2024, 1, 2),
+      category: 'Reading',
+    ),
+    Task(
+      id: 38,
+      name: 'Organize Closet',
+      description: 'Declutter and organize wardrobe for a fresh start.',
+      isDone: false,
+      isTopPriority: true,
+      starts: DateTime(2024, 1, 1),
+      ends: DateTime(2024, 1, 2),
+      category: 'Personal',
+    ),
+    Task(
+      id: 39,
+      name: 'Practice Calligraphy',
+      description: 'Enhance handwriting skills through calligraphy practice.',
+      isDone: false,
+      isTopPriority: false,
+      starts: DateTime(2024, 1, 1),
+      ends: DateTime(2024, 1, 2),
+      category: 'Hobby',
+    ),
+
   ];
 
   taskList = sampleTaskList;

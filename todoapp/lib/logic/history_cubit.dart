@@ -11,25 +11,28 @@ class HistoryState{
 class HistoryCubit extends Cubit<HistoryState> {
   HistoryCubit() : super(HistoryState(historyList: userHistoryList));
 
-  void createTask(taskName) {
-    userHistoryList.insert(0, History(taskName: taskName, action: 'create', when: DateTime.now()));
+  void createTask(taskName, id) {
+    userHistoryList.insert(0, History(id: id,taskName: taskName, action: 'create', when: DateTime.now()));
     emit(HistoryState(historyList: userHistoryList));
     saveData();
   }
 
-  void updateTask(taskName) {
-    userHistoryList.insert(0, History(taskName: taskName, action: 'update', when: DateTime.now()));
+  void updateTask(taskName, id) {
+    userHistoryList.insert(0, History(id: id,taskName: taskName, action: 'update', when: DateTime.now()));
     emit(HistoryState(historyList: userHistoryList));
+    saveData();
   }
 
-  void finishTask(taskName) {
-    userHistoryList.insert(0, History(taskName: taskName, action: 'finish', when: DateTime.now()));
+  void finishTask(taskName, id) {
+    userHistoryList.insert(0, History(id: id,taskName: taskName, action: 'finish', when: DateTime.now()));
     emit(HistoryState(historyList: userHistoryList));
+    saveData();
   }
 
-  void deleteTask(taskName) {
-    userHistoryList.insert(0, History(taskName: taskName, action: 'delete', when: DateTime.now()));
+  void deleteTask(taskName, id) {
+    userHistoryList.insert(0, History(id: id,taskName: taskName, action: 'delete', when: DateTime.now()));
     emit(HistoryState(historyList: userHistoryList));
+    saveData();
   }
 
 }

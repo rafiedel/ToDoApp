@@ -1,5 +1,8 @@
-// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names
-
+// ignore_for_file: use_build_context_synchronously, non_constant_identifier_names, depend_on_referenced_packages
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:todoapp/data/database.dart';
 import 'package:todoapp/logic/history_cubit.dart';
 import 'package:todoapp/logic/task_list_cubit.dart';
@@ -8,8 +11,8 @@ import 'package:todoapp/logic/user_cubit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
+import 'package:todoapp/screens/view_task_summary.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -19,6 +22,36 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+
+
+  Future<void> pickImageFromGallery(whichImage) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      File? _imgFile = File(pickedFile.path);
+      Uint8List _imgBytes = _imgFile.readAsBytesSync();
+      String _imgStrings  = String.fromCharCodes(_imgBytes);
+      // img = await cropImage(imageFile: img);
+      // String path = img!.path;
+      setState(() {
+        if (whichImage == 'pp') {
+          BlocProvider.of<UserCubit>(context).changeProfilePicture(_imgStrings);
+        }
+        else {
+          BlocProvider.of<UserCubit>(context).changeHomeTopBarBG(_imgStrings);
+        }
+      });
+    }
+  }
+
+  Future<File?> cropImage({required File imageFile}) async {
+    CroppedFile? croppedImage  =
+      await ImageCropper().cropImage(sourcePath: imageFile.path);
+    if (croppedImage == null) return File('');
+    return File(croppedImage.path);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     double phoneWidth = MediaQuery.of(context).size.width;
@@ -30,18 +63,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 
-  Future checkIfImageExist(BuildContext context, String imageUrl) async {
-    bool? imageExist;
-    var response = await http.head(Uri.parse(imageUrl));
-    setState(() {
-      imageExist = response.statusCode == 200;
-    });
-    if (imageExist! == false) {
-      BlocProvider.of<UserCubit>(context).changePfp(
-          'https://i.pinimg.com/originals/6b/88/de/6b88de7a6f10c72d873f745c6288f2f2.jpg');
-    }
-  }
-
   Widget ProfileContent(BuildContext context, double phoneWidth) {
     return Center(
       child: SingleChildScrollView(
@@ -50,12 +71,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: <Widget>[
             BlocBuilder<UserCubit, UserState>(
               builder: (context, state) {
-                if (state.user.linkAppBarBG.isNotEmpty) {
-                  checkIfImageExist(context, state.user.linkPfp);
+                if (state.user.profilePicture != Uint8List(0)) {
+                   return CircleAvatar(
+                    radius: phoneWidth / 5,
+                    backgroundImage: MemoryImage(Uint8List.fromList(state.user.profilePicture.codeUnits)),
+                  );
                 }
                 return CircleAvatar(
-                  radius: phoneWidth / 5,
-                  backgroundImage: NetworkImage(state.user.linkPfp),
+                  radius: phoneWidth/5,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 );
               },
             ),
@@ -100,7 +124,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Map<String, List<Task>> summary = {
           'FINISHED': [],
           'NOT YET': [],
-          "DIDN'T FINISH": []
+          "LATE": []
         };
         for (Task task in state.taskList) {
           if (task.category != 'Daily') {
@@ -111,64 +135,81 @@ class _ProfileScreenState extends State<ProfileScreen> {
               summary['NOT YET']!.add(task);
             } else if (task.isDone == false &&
                 task.ends.isBefore(DateTime.now())) {
-              summary["DIDN'T FINISH"]!.add(task);
+              summary["LATE"]!.add(task);
             }
           }
         }
-        return Container(
-          margin: EdgeInsets.symmetric(horizontal: phoneWidth / 20),
-          child: ExpansionTile(
-            trailing: const Icon(Icons.stacked_bar_chart),
-            backgroundColor:
-                Theme.of(context).colorScheme.secondary.withOpacity(0.5),
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            title: Text(
-              'YOUR SUMMARY',
-              style: TextStyle(
-                  letterSpacing: phoneWidth / 100, fontWeight: FontWeight.w900),
-            ),
-            children: [
-              SizedBox(
-                height: phoneWidth / 4.25,
-                child: Row(
-                  children: ['FINISHED', 'NOT YET', "DIDN'T FINISH"].map((key) {
-                    return Expanded(
-                      flex: 1,
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: phoneWidth / 40),
-                        decoration: BoxDecoration(
-                          border: Border(
-                              right: key.contains('DIDN')
-                                  ? const BorderSide(color: Colors.transparent)
-                                  : BorderSide(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .inversePrimary))),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            Text(
-                              key,
-                              style: TextStyle(
-                                fontSize: phoneWidth/35
+        return Stack(
+          children: [
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: phoneWidth / 20),
+              child: ExpansionTile(
+                trailing: const Icon(Icons.stacked_bar_chart),
+                backgroundColor:
+                    Theme.of(context).colorScheme.secondary.withOpacity(0.5),
+                shape:
+                    RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                title: Text(
+                  'YOUR SUMMARY',
+                  style: TextStyle(
+                      letterSpacing: phoneWidth / 100, fontWeight: FontWeight.w900),
+                ),
+                children: [
+                  SizedBox(
+                    height: phoneWidth / 5,
+                    child: Row(
+                      children: ['FINISHED', 'NOT YET', "LATE"].map((key) {
+                        return Expanded(
+                          flex: 1,
+                          child: GestureDetector(
+                            onTap: () {
+                              List<Task> tasksToShow = summary[key]!;
+                              if (tasksToShow.length != 0 && key != 'NOT YET') {
+                                Navigator.push(
+                                  context, 
+                                  MaterialPageRoute(builder: (BuildContext context) => ViewSummaryTask(tasks: tasksToShow, tasksTitle: key,))
+                                );
+                              }
+                            },
+                            child: Container(
+                              margin: EdgeInsets.symmetric(vertical: phoneWidth / 40),
+                              decoration: BoxDecoration(
+                                border: Border(
+                                    right: key.contains('LATE')
+                                        ? const BorderSide(color: Colors.transparent)
+                                        : BorderSide(
+                                            color: Theme.of(context)
+                                                .colorScheme
+                                                .inversePrimary))),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: <Widget>[
+                                  Text(
+                                    'FINISHEDLATE'.contains(key)?'ᯓ$keyᯓ' : key,
+                                    style: TextStyle(
+                                      fontSize: phoneWidth/35
+                                    ),
+                                  ),
+                                  Expanded(
+                                    child: Text(
+                                      summary[key]!.length.toString(),
+                                      style: TextStyle(
+                                        fontSize: phoneWidth / 15,
+                                      ),
+                                    ),
+                                  )
+                                ],
                               ),
                             ),
-                            Text(
-                              summary[key]!.length.toString(),
-                              style: TextStyle(
-                                fontSize: phoneWidth / 15,
-                              ),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                ),
-              )
-            ],
-          ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          ],
         );
       },
     );
@@ -276,10 +317,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           leading: const Icon(Icons.add_photo_alternate_outlined),
           title: const Text('Display Home App Bar BackGround'),
           trailing: GestureDetector(
-              onTap: () => changeUserName(
-                  context, phoneWidth, 'Display Home App Bar BackGround'),
-              child: Text(state.user.linkAppBarBG !=
-                      'https://i.pinimg.com/originals/84/2a/23/842a235b114bd04c1014cadd83da22fd.png'
+              onTap: () => pickImageFromGallery('bg'),
+              child: Text(state.user.homeTopBarBG != File('')
                   ? 'set'
                   : 'not set')),
         );
@@ -294,10 +333,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           leading: const Icon(Icons.emoji_emotions),
           title: const Text('Display Profile Picture'),
           trailing: GestureDetector(
-              onTap: () => changeUserName(
-                  context, phoneWidth, 'Display Profile Picture'),
-              child: Text(state.user.linkPfp !=
-                      'https://i.pinimg.com/originals/6b/88/de/6b88de7a6f10c72d873f745c6288f2f2.jpg'
+              onTap: () => pickImageFromGallery('pp'),
+              child: Text(state.user.homeTopBarBG != File('')
                   ? 'set'
                   : 'not set')),
         );
@@ -352,48 +389,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
             content: SizedBox(
               width: phoneWidth,
-              child: MyTextField(context, whichController),
+              child: MyTextField(context),
             ),
           );
         });
   }
 
-  Widget MyTextField(BuildContext context, String whichController) {
+  Widget MyTextField(BuildContext context) {
     final TextEditingController userNameController = TextEditingController();
-    final TextEditingController linkHomeAppBarBG = TextEditingController();
-    final TextEditingController linkPfp = TextEditingController();
     double phoneWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         userNameController.text = state.user.displayName;
-        linkHomeAppBarBG.text = state.user.linkAppBarBG;
-        linkPfp.text = state.user.linkPfp;
         return TextField(
-          maxLength: whichController.contains('Display Name') ? 15 : null,
-          controller: whichController.contains('Display Name')
-              ? userNameController
-              : (whichController.contains('Display Home')
-                  ? linkHomeAppBarBG
-                  : linkPfp),
+          maxLength: 15 ,
+          controller: userNameController,
           onChanged: (value) {
             setState(() {
-              if (whichController.contains('Display Name')) {
                 userNameController.text = value;
                 BlocProvider.of<UserCubit>(context).changeName(value);
-              } else if (whichController.contains('Display Home')) {
-                linkHomeAppBarBG.text = value;
-                BlocProvider.of<UserCubit>(context).changeAppBarBG(value);
-              } else if (whichController.contains('Display Profile')) {
-                linkPfp.text = value;
-                BlocProvider.of<UserCubit>(context).changePfp(value);
-              }
             });
           },
           decoration: InputDecoration(
-            label: whichController.contains('Display Name')
-                ? const Text('Enter Text')
-                : const Text('Enter Image Link'),
-            hintText: whichController,
+            label: const Text('Enter Text'),
+            // hintText: whichController,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),

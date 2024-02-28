@@ -35,6 +35,7 @@ class TaskListCubit extends Cubit<TaskListState>{
       )
     );
     emit(TaskListState(taskList: state.taskList));
+    saveData();
   }
 
 }

@@ -1,5 +1,8 @@
 // ignore_for_file: prefer_const_constructors_in_immutables, use_build_context_synchronously, non_constant_identifier_names, prefer_const_constructors
 
+import 'dart:io';
+import 'dart:typed_data';
+
 import 'package:todoapp/data/database.dart';
 import 'package:todoapp/logic/task_list_cubit.dart';
 import 'package:todoapp/logic/user_cubit.dart';
@@ -11,7 +14,6 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:http/http.dart' as http;
 
 // ignore: must_be_immutable
 class HomeScreen extends StatefulWidget {
@@ -24,17 +26,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
 
   final SwiperController _swiperController = SwiperController();
-
-  Future checkIfImageExist(BuildContext context,String imageUrl) async{
-   bool? imageExist;
-    var response = await http.head(Uri.parse(imageUrl));
-    setState(() {
-      imageExist = response.statusCode == 200;
-    });
-    if (imageExist! == false) {
-      BlocProvider.of<UserCubit>(context).changeAppBarBG('https://i.pinimg.com/originals/84/2a/23/842a235b114bd04c1014cadd83da22fd.png');
-    }
-  }
 
   
   @override
@@ -62,18 +53,14 @@ class _HomeScreenState extends State<HomeScreen> {
       ],
       flexibleSpace: BlocBuilder<UserCubit, UserState>(
         builder: (context, state) {
-          if (state.user.linkAppBarBG.isNotEmpty){
-            checkIfImageExist(context, state.user.linkAppBarBG);
-          }
           return FlexibleSpaceBar(
             background: Container(
               padding: EdgeInsets.symmetric(horizontal: phoneWidth / 50),
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: NetworkImage(
-                          state.user.linkAppBarBG
-                      ),
-                      fit: BoxFit.fitWidth)),
+                  image: state.user.homeTopBarBG != Uint8List(0)
+                    ? DecorationImage(
+                        image: MemoryImage(Uint8List.fromList(state.user.homeTopBarBG.codeUnits)),
+                      fit: BoxFit.fitWidth) : null),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -259,7 +246,8 @@ class _HomeScreenState extends State<HomeScreen> {
             SizedBox(
               height: phoneWidth / 30,
             ),
-            SizedBox(
+            upcomingTask.isNotEmpty
+            ?SizedBox(
               height: phoneWidth/7.5 + phoneWidth/7.5 * maxItems,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20), // Rounded corners
@@ -383,7 +371,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                 ),
               ),
-            ),
+            ) : Center(
+                    child: Text("~~ enjoy your peacefull life ~~"),
+                  ),
           ],
         );
       },
