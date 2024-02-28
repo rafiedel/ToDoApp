@@ -186,7 +186,8 @@ class _SearchScreenState extends State<SearchScreen> {
             task.ends.year == day.year &&
             task.ends.month == day.month &&
             task.ends.day == day.day &&
-            task.category != 'Daily')
+            task.category != 'Daily' &&
+            task.isDone == false)
         .toList();
 
         List<dynamic> eventsAtStarts = taskList
@@ -194,7 +195,8 @@ class _SearchScreenState extends State<SearchScreen> {
             task.starts.year == day.year &&
             task.starts.month == day.month &&
             task.starts.day == day.day &&
-            task.category != 'Daily')
+            task.category != 'Daily' &&
+            task.isDone == false)
         .toList();
 
         return eventsAtStarts + eventsAtEnds;

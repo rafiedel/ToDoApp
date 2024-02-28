@@ -22,9 +22,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-  final SwiperController _swiperController = SwiperController();
-
   
   @override
   Widget build(BuildContext context) {
@@ -120,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
         SizedBox(
           height: phoneWidth / 50,
         ),
-        UpcomingTaskSection(context),
+        UpcomingTask()
       ],
     );
   }
@@ -186,8 +183,21 @@ class _HomeScreenState extends State<HomeScreen> {
       },
     );
   }
+}
 
-  Widget UpcomingTaskSection(BuildContext context) {
+
+class UpcomingTask extends StatefulWidget {
+  UpcomingTask({super.key});
+
+  @override
+  State<UpcomingTask> createState() => _UpcomingTaskState();
+}
+
+class _UpcomingTaskState extends State<UpcomingTask> {
+  final SwiperController _swiperController = SwiperController();
+
+  @override
+  Widget build(BuildContext context) {
     double phoneWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<TaskListCubit, TaskListState>(
       builder: (context, state) {
