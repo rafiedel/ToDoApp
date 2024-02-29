@@ -8,7 +8,6 @@ import 'package:todoapp/logic/history_cubit.dart';
 import 'package:todoapp/logic/task_list_cubit.dart';
 import 'package:todoapp/logic/theme_cubit.dart';
 import 'package:todoapp/logic/user_cubit.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -72,13 +71,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
               builder: (context, state) {
                 if (state.user.profilePicture != '') {
                    return CircleAvatar(
-                    radius: phoneWidth / 5,
+                    radius: phoneWidth / 6,
                     backgroundImage: MemoryImage(Uint8List.fromList(state.user.profilePicture.codeUnits)),
                   );
                 }
                 return CircleAvatar(
-                  radius: phoneWidth/5,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  radius: phoneWidth/6,
+                  backgroundImage: const AssetImage('assets/images/person.jpg'),
                 );
               },
             ),
@@ -98,13 +97,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: phoneWidth / 20),
       child: ExpansionTile(
-        trailing: const Icon(Icons.settings),
+        trailing: Icon(Icons.settings, size:phoneWidth/20,),
         backgroundColor:
             Theme.of(context).colorScheme.secondary.withOpacity(0.5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         title: Text(
           'SETTINGS',
           style: TextStyle(
+              fontSize: phoneWidth/30,
               letterSpacing: phoneWidth / 100, fontWeight: FontWeight.w900),
         ),
         children: [
@@ -143,19 +143,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: phoneWidth / 20),
               child: ExpansionTile(
-                trailing: const Icon(Icons.stacked_bar_chart),
+                trailing: Icon(Icons.stacked_bar_chart, size: phoneWidth/20,),
                 backgroundColor:
                     Theme.of(context).colorScheme.secondary.withOpacity(0.5),
                 shape:
                     RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                
                 title: Text(
                   'YOUR SUMMARY',
                   style: TextStyle(
-                      letterSpacing: phoneWidth / 100, fontWeight: FontWeight.w900),
+                      letterSpacing: phoneWidth / 100, fontWeight: FontWeight.w900, fontSize: phoneWidth/30),
                 ),
                 children: [
                   SizedBox(
-                    height: phoneWidth / 5,
+                    height: phoneWidth / 6,
                     child: Row(
                       children: ['FINISHED', 'NOT YET', "LATE"].map((key) {
                         return Expanded(
@@ -171,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               }
                             },
                             child: Container(
-                              margin: EdgeInsets.symmetric(vertical: phoneWidth / 40),
+                              margin: EdgeInsets.symmetric(vertical: phoneWidth / 30),
                               decoration: BoxDecoration(
                                 border: Border(
                                     right: key.contains('LATE')
@@ -186,14 +187,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   Text(
                                     'FINISHEDLATE'.contains(key)?'ᯓ$keyᯓ' : key,
                                     style: TextStyle(
-                                      fontSize: phoneWidth/35
+                                      fontSize: phoneWidth/50
                                     ),
                                   ),
                                   Expanded(
                                     child: Text(
                                       summary[key]!.length.toString(),
                                       style: TextStyle(
-                                        fontSize: phoneWidth / 15,
+                                        fontSize: phoneWidth / 20,
                                       ),
                                     ),
                                   )
@@ -218,35 +219,35 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: phoneWidth / 20),
       child: ExpansionTile(
-        trailing: const Icon(Icons.history_outlined),
+        trailing: Icon(Icons.history_outlined, size: phoneWidth/20,),
         backgroundColor:
             Theme.of(context).colorScheme.secondary.withOpacity(0.5),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         title: Text(
           'HISTORY',
           style: TextStyle(
-              letterSpacing: phoneWidth / 40, fontWeight: FontWeight.w900),
+              fontSize: phoneWidth/30, letterSpacing: phoneWidth / 40, fontWeight: FontWeight.w900),
         ),
         children: [
           BlocBuilder<HistoryCubit, HistoryState>(
             builder: (context, state) {
               return DataTable(
                 columnSpacing: 20.0, 
-                columns: const [
+                columns: [
                   DataColumn(
-                    label: Text('Task Name'),
+                    label: Text('Task Name'.toUpperCase(), style: TextStyle(fontSize: phoneWidth/40),),
                   ),
                   DataColumn(
-                    label: Text('Action'),
+                    label: Text('Action'.toUpperCase(), style: TextStyle(fontSize: phoneWidth/40),),
                   ),
                   DataColumn(
-                    label: Text('Date'),
+                    label: Text('Date'.toUpperCase(), style: TextStyle(fontSize: phoneWidth/40),),
                   ),
                 ],
                 rows: state.historyList.map((history) {
                   return DataRow(cells: [
                     DataCell(
-                      Text(history.taskName),
+                      Text(history.taskName, style: TextStyle(fontSize: phoneWidth/40),),
                     ),
                     DataCell(
                       Container(
@@ -257,14 +258,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             left: BorderSide(color: Theme.of(context).colorScheme.inversePrimary)
                           )
                         ),
-                        child: Text(history.action)
+                        child: Text(history.action, style: TextStyle(fontSize: phoneWidth/40),)
                       ),
                     ),
                     DataCell(
                       SizedBox(
                         width: phoneWidth/8,
-                        child: Text(DateFormat('dd MMM').format(history.when)
-                      )),
+                        child: Text(DateFormat('dd MMM').format(history.when), style: TextStyle(fontSize: phoneWidth/40),)
+                      ),
                     ),
                   ]);
                 }).toList(),
@@ -280,15 +281,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget DarkMode() {
+    double phoneWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<ThemeCubit, ThemeState>(
       builder: (context, state) {
         return ListTile(
-          leading: const Icon(Icons.dark_mode),
-          trailing: CupertinoSwitch(
-              value: state.isDarkMode,
-              onChanged: (value) =>
-                  BlocProvider.of<ThemeCubit>(context).changeTheme()),
-          title: const Text('Dark Mode'),
+          leading: Icon(Icons.dark_mode, size: phoneWidth/20,),
+          trailing: Transform.translate(
+            offset: Offset(phoneWidth/20, 0),
+            child: Transform.scale(
+              scale: 0.75,
+              child: Switch(
+                  value: state.isDarkMode,
+                  onChanged: (value) =>
+                      BlocProvider.of<ThemeCubit>(context).changeTheme()),
+            ),
+          ),
+          title: Text('Dark Mode', style: TextStyle(fontSize: phoneWidth/35),),
         );
       },
     );
@@ -298,11 +306,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         return ListTile(
-          leading: const Icon(Icons.border_color_outlined),
-          title: const Text('Display Name'),
+          leading: Icon(Icons.border_color_outlined, size: phoneWidth/20,),
+          title: Text('Display Name', style: TextStyle(fontSize: phoneWidth/35),),
           trailing: GestureDetector(
             onTap: () => changeUserName(context, phoneWidth, 'Display Name'),
-            child: Text(state.user.displayName.isNotEmpty ? 'set' : 'not set'),
+            child: Text(state.user.displayName.isNotEmpty ? 'set' : 'not set', style: TextStyle(fontSize: phoneWidth/40),),
           ),
         );
       },
@@ -313,13 +321,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         return ListTile(
-          leading: const Icon(Icons.add_photo_alternate_outlined),
-          title: const Text('Display Home App Bar BackGround'),
+          leading: Icon(Icons.add_photo_alternate_outlined, size: phoneWidth/20,),
+          title: Text('Display Home App Bar BackGround', style: TextStyle(fontSize: phoneWidth/35),),
           trailing: GestureDetector(
               onTap: () => pickImageFromGallery('bg'),
               child: Text(state.user.homeTopBarBG != ''
                   ? 'set'
-                  : 'not set')),
+                  : 'not set', style: TextStyle(fontSize: phoneWidth/40),)),
         );
       },
     );
@@ -329,13 +337,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         return ListTile(
-          leading: const Icon(Icons.emoji_emotions),
-          title: const Text('Display Profile Picture'),
+          leading: Icon(Icons.emoji_emotions, size: phoneWidth/20,),
+          title: Text('Display Profile Picture', style: TextStyle(fontSize: phoneWidth/45),),
           trailing: GestureDetector(
               onTap: () => pickImageFromGallery('pp'),
               child: Text(state.user.homeTopBarBG != ''
                   ? 'set'
-                  : 'not set')),
+                  : 'not set', style: TextStyle(fontSize: phoneWidth/40),)),
         );
       },
     );

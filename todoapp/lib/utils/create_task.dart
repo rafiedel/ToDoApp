@@ -114,7 +114,7 @@ class _CreateTaskButton extends State<CreateTaskButton> {
                           ),
                           DateSection(),
                           SizedBox(
-                            height: phoneWidth / 100,
+                            height: phoneWidth / 80,
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -128,14 +128,14 @@ class _CreateTaskButton extends State<CreateTaskButton> {
                               )
                             ],
                           ),
-                          SizedBox(
-                            height: phoneWidth / 100,
-                          ),
                           CategorySection(),
+                          SizedBox(
+                            height: phoneWidth/25,
+                          ),
                           SectionLabel('Name'),
                           MyTextField(_nameController, 1, 'name'),
                           SizedBox(
-                            height: phoneWidth / 30,
+                            height: phoneWidth / 20,
                           ),
                           SectionLabel('Description'),
                           MyTextField(_descriptionController, 5, 'description'),
@@ -184,7 +184,7 @@ class _CreateTaskButton extends State<CreateTaskButton> {
       child: Text(
         sectionName,
         style:
-            TextStyle(fontSize: phoneWidth / 25, fontWeight: FontWeight.bold),
+            TextStyle(fontSize: phoneWidth / 30, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -261,7 +261,7 @@ class _CreateTaskButton extends State<CreateTaskButton> {
         return Container(
           margin: EdgeInsets.symmetric(horizontal: phoneWidth/30),
           child: MaterialButton(
-            padding: EdgeInsets.symmetric(horizontal: phoneWidth/40),
+            padding: EdgeInsets.symmetric(horizontal: phoneWidth/40, vertical: phoneWidth/35),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10),
               side: BorderSide(color: Theme.of(context).colorScheme.inversePrimary)
@@ -281,9 +281,9 @@ class _CreateTaskButton extends State<CreateTaskButton> {
                 Icon(Icons.calendar_month, size: phoneWidth/20,),
                 SizedBox(width: phoneWidth/40,),
                 Text(
-                  state.newTask.category == 'Daily'? '~~~' : DateFormat('EEE MMM dd, yyy').format(date),
+                  state.newTask.category == 'Daily'? '~~~' : DateFormat('MMMM dd, yyy').format(date),
                   style: TextStyle(
-                    fontSize: phoneWidth/35
+                    fontSize:  phoneWidth/40
                   ),
                 ),
               ],
@@ -423,7 +423,7 @@ class _CreateTaskButton extends State<CreateTaskButton> {
               return Center(
                 child: Text(text,
                   style: TextStyle(
-                    fontSize: phoneWidth / 50,
+                    fontSize: phoneWidth / 70,
                   )
                 )
               );

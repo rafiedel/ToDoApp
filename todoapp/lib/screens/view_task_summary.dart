@@ -9,6 +9,11 @@ class ViewSummaryTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (tasksTitle == 'LATE') {
+      tasks.sort((a,b) => a.ends.compareTo(b.ends));
+    } else {
+      tasks.sort((a,b) => b.ends.compareTo(a.ends));
+    }
     double phoneWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(

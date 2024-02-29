@@ -23,7 +23,7 @@ class TaskCustomizeTile extends StatelessWidget {
                     )));
       },
       child: Container(
-        height: phoneWidth / 4,
+        height: MediaQuery.of(context).size.height / 10.5,
         margin: EdgeInsets.symmetric(
             vertical: phoneWidth / 40, horizontal: phoneWidth / 30),
         decoration: BoxDecoration(
@@ -56,7 +56,7 @@ class TaskCustomizeTile extends StatelessWidget {
                                     decoration: task.isDone
                                         ? TextDecoration.lineThrough
                                         : TextDecoration.none,
-                                    fontSize: phoneWidth / 25),
+                                    fontSize: phoneWidth / 27.5),
                               ),
                             ),
                             Container(
@@ -93,7 +93,7 @@ class TaskCustomizeTile extends StatelessWidget {
                                 decoration: task.isDone
                                     ? TextDecoration.lineThrough
                                     : TextDecoration.none,
-                                fontSize: phoneWidth / 35,
+                                fontSize: phoneWidth / 40,
                                 color: Theme.of(context)
                                     .colorScheme
                                     .inversePrimary
@@ -119,7 +119,7 @@ class TaskCustomizeTile extends StatelessWidget {
                                 ? '${DateFormat('MMM, EEE dd').format(task.starts)} - ${DateFormat('dd').format(task.ends)}'
                                 : '~~ DEFAULT ~~',
                         style: TextStyle(
-                            fontSize: phoneWidth / 45,
+                            fontSize: phoneWidth / 50,
                             fontStyle: FontStyle.italic),
                       )
                     ],

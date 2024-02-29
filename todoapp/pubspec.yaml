@@ -83,6 +83,8 @@ flutter:
   assets:
     - assets/videos/kucingRain.mp4
     - assets/images/pprafie.jpg
+    - assets/images/person.jpg
+    - assets/images/space.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

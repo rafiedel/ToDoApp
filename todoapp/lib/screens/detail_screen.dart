@@ -484,9 +484,10 @@ class _DetailScrenState extends State<DetailScren> {
                   context: context, 
                   builder: (context) {
                     return AlertDialog(
-                      title: const Text('Are you sure to delete this task?',),
+                      title: Text('Are you sure to delete this task?', style: TextStyle(fontSize: phoneWidth/20),),
                       actions: [
                         MaterialButton(
+                          padding: EdgeInsets.all(phoneWidth/100),
                           onPressed: () {
                             BlocProvider.of<HistoryCubit>(context).deleteTask(task.name, task.id);
                             taskList.removeWhere((targetedTask) => targetedTask.id == task.id);
@@ -502,7 +503,7 @@ class _DetailScrenState extends State<DetailScren> {
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10)
                           ),
-                          child: const Text('YES'), 
+                          child: Text('YES', style: TextStyle(fontSize: phoneWidth/30),), 
                         )
                       ],
                     );

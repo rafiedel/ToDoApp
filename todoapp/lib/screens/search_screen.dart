@@ -72,6 +72,49 @@ class _SearchScreenState extends State<SearchScreen> {
     double phoneWidth = MediaQuery.of(context).size.width;
     return TableCalendar(
       calendarBuilders: CalendarBuilders(
+        headerTitleBuilder: (context, day) {
+          return Text(
+            DateFormat('MMMM yyy').format(day).toUpperCase(),
+            style: TextStyle(
+              fontSize: phoneWidth/25,
+              letterSpacing: phoneWidth/80,
+              fontWeight: FontWeight.bold
+            ),
+          );
+        },
+        dowBuilder: (context, day) {
+          return Center(
+            child: Text(
+              DateFormat('EEE').format(day),
+              style: TextStyle(
+                fontSize: phoneWidth/30,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8)
+              ),
+            ),
+          );
+        },
+      //   outsideBuilder: (context, day, focusedDay){
+      //     return Center(
+      //       child: Text(
+      //         DateFormat('dd').format(day),
+      //         style: TextStyle(
+      //           fontSize: phoneWidth/40,
+      //           color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5)
+      //         ),
+      //       ),
+      //     );
+      //   },
+      //   defaultBuilder: (context, day, focusedDay) {
+      //     return Center(
+      //       child: Text(
+      //         DateFormat('dd').format(day),
+      //         style: TextStyle(
+      //           fontSize: phoneWidth/30
+      //         ),
+      //       ),
+      //     );
+      //   },
         todayBuilder: (context, day, focusedDay) {
           return Container(
             margin: EdgeInsets.all(phoneWidth/40),
@@ -91,7 +134,8 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Text(
                 DateFormat('dd').format(day),
                 style: TextStyle(
-                  color: Theme.of(context).colorScheme.background
+                  color: Theme.of(context).colorScheme.background,
+                  fontSize: phoneWidth/30
                 ),
               ),
             ),
@@ -116,7 +160,8 @@ class _SearchScreenState extends State<SearchScreen> {
               child: Text(
                 DateFormat('dd').format(day),
                 style: TextStyle(
-                  color: Colors.grey.shade900
+                  color: Colors.grey.shade900,
+                  fontSize: phoneWidth/30
                 ),
               ),
             ),
@@ -147,15 +192,38 @@ class _SearchScreenState extends State<SearchScreen> {
           );
         },
       ),
+      calendarStyle: CalendarStyle(
+        defaultTextStyle: TextStyle(
+          fontSize: phoneWidth/30
+        ),
+        weekendTextStyle: TextStyle(
+          fontSize: phoneWidth/30,
+          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8)
+        ),
+        outsideTextStyle: TextStyle(
+          fontSize: phoneWidth/30,
+          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.25)
+        ),
+      ),
       focusedDay: _focusedDay, 
       firstDay: DateTime(2024), 
       lastDay: DateTime(2024).add(const Duration(days: 5 * 365)),
-      
       availableCalendarFormats: const {
-        CalendarFormat.month : 'Month', 
-        CalendarFormat.twoWeeks : 'Refresh', 
-        CalendarFormat.week : 'Week'
+        CalendarFormat.month : '↻', 
+        CalendarFormat.twoWeeks : '↻', 
+        CalendarFormat.week : '↻'
       },
+      headerStyle: HeaderStyle(
+        formatButtonTextStyle: TextStyle(
+          fontSize: phoneWidth/20,
+          fontWeight: FontWeight.bold
+        ),
+        formatButtonPadding: const EdgeInsets.all(0),
+        formatButtonDecoration: const BoxDecoration(),
+        headerPadding: EdgeInsets.only(bottom: phoneWidth/15, top: phoneWidth/50),
+        rightChevronPadding: EdgeInsets.only(left: phoneWidth/50),
+        leftChevronPadding: EdgeInsets.only(right: phoneWidth/50)
+      ),
       selectedDayPredicate: (day) {
         return isSameDay(_selectedDay, day);
       },
@@ -225,7 +293,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 BlocProvider.of<SearchTaskCubit>(context).searchTaskWithKeyword(_searchController.text, _selectedDay);
               },
               style: TextStyle(
-                fontSize: phoneWidth/25
+                fontSize: phoneWidth/30
               ),
               decoration: InputDecoration(
                 border: InputBorder.none, // Hide TextField border
@@ -262,49 +330,58 @@ class _SearchScreenState extends State<SearchScreen> {
                     MaterialPageRoute(builder: (BuildContext context) => DetailScren(task: state.taskBeingSearched[index]))
                   );
                 },
-                child: ListTile(
-                  contentPadding: EdgeInsets.symmetric(horizontal:  phoneWidth/40),
-                  title: Text(
-                    task.name, 
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w900,
-                      fontSize: phoneWidth/30
-                    ),
-                  ),
-                  subtitle: Row(
+                child: Container(
+                  margin: EdgeInsets.symmetric(horizontal: phoneWidth/40, vertical: phoneWidth/30),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        task.category.isNotEmpty? '# ${task.category}' : '~~~',
-                        style: TextStyle(
-                          fontSize: phoneWidth/40,
-                        ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Text(
+                            task.name, 
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontWeight: FontWeight.w900,
+                              fontSize: phoneWidth/30
+                            ),
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Text(
+                                task.category.isNotEmpty? '# ${task.category}' : '~~~',
+                                style: TextStyle(
+                                  fontSize: phoneWidth/40,
+                                ),
+                              ),
+                              Container(
+                                margin: EdgeInsets.symmetric(horizontal: phoneWidth/30),
+                                child: Text('|', style: TextStyle(fontSize: phoneWidth/40),)
+                              ),
+                              Text(
+                                '${DateFormat('MMM, EEE dd').format(task.starts)} - ${DateFormat('dd').format(task.ends)}',
+                                style: TextStyle(
+                                  fontSize: phoneWidth/40,
+                                  fontStyle: FontStyle.italic,
+                                  color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5)
+                                ),
+                              ),
+                            ],
+                          )
+                        ],
                       ),
-                      Container(
-                        margin: EdgeInsets.symmetric(horizontal: phoneWidth/30),
-                        child: const Text('|')
-                      ),
-                      Text(
-                        '${DateFormat('MMM, EEE dd').format(task.starts)} - ${DateFormat('dd').format(task.ends)}',
-                        style: TextStyle(
-                          fontSize: phoneWidth/40,
-                          fontStyle: FontStyle.italic,
-                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5)
-                        ),
-                      ),
+                      _refresh
+                        ? Icon(
+                            Icons.circle, 
+                            color: task.isTopPriority? Colors.red : Colors.blue,
+                            size: phoneWidth/30, 
+                          )
+                        : Text(
+                          state.taskBeingSearched[index].starts.day == _selectedDay.day? "STARTS" : "ENDS"
+                          ),
                     ],
                   ),
-                  trailing: 
-                    _refresh
-                      ? Icon(
-                          Icons.circle, 
-                          color: task.isTopPriority? Colors.red : Colors.blue,
-                          size: phoneWidth/30, 
-                        )
-                      : Text(
-                        state.taskBeingSearched[index].starts.day == _selectedDay.day? "STARTS" : "ENDS"
-                        ),
-                ),
+                )
               );
             } else {
               return const SizedBox.shrink();

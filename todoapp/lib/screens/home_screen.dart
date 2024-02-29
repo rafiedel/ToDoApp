@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SliverAppBar(
       floating: false,
       pinned: false,
-      expandedHeight: phoneWidth / 2.5,
+      expandedHeight: phoneWidth / 2.25,
       actions: [
         Row(
           children: <Widget>[
@@ -55,7 +55,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   image: state.user.homeTopBarBG != ''
                     ? DecorationImage(
                         image: MemoryImage(Uint8List.fromList(state.user.homeTopBarBG.codeUnits)),
-                      fit: BoxFit.fitWidth) : null),
+                      fit: BoxFit.fitWidth) 
+                    : DecorationImage(
+                      image: AssetImage('assets/images/space.jpg'),
+                      fit: BoxFit.fitWidth
+                    )
+            ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -114,9 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
         SizedBox(
           height: phoneWidth / 15,
         ),
-        SizedBox(
-          height: phoneWidth / 50,
-        ),
         UpcomingTask()
       ],
     );
@@ -129,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
         List<Task> ongoingTask = state.taskList.where((task) {
           return DateTime.now().isAfter(task.starts) && DateTime.now().isBefore(task.ends) && task.isDone == false;
         }).toList();
+        ongoingTask.sort((a,b) => a.ends.compareTo(b.ends));
         return Column(
           children: [
             Container(
@@ -139,7 +142,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     "Ongoing",
                     style: TextStyle(
-                        fontSize: phoneWidth / 20, fontWeight: FontWeight.w400),
+                        fontSize: phoneWidth / 22.5, fontWeight: FontWeight.w400),
                   ),
                   Visibility(
                     visible: ongoingTask.length > 3,
@@ -159,7 +162,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         decoration: BoxDecoration(
                             color: Theme.of(context).colorScheme.tertiary,
                             borderRadius: BorderRadius.circular(5)),
-                        child: const Text('View All'),
+                        child: Text(
+                          'View All',
+                          style: TextStyle(
+                            fontSize: phoneWidth/40
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -239,13 +247,16 @@ class _UpcomingTaskState extends State<UpcomingTask> {
                   child: Text(
                     "Upcoming",
                     style: TextStyle(
-                        fontSize: phoneWidth / 20, fontWeight: FontWeight.w400),
+                        fontSize: phoneWidth / 22.5, fontWeight: FontWeight.w400),
                   ),
                 ),
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: phoneWidth / 30),
                   child: Text(
-                    '${_swiperController.index+1}/${tasksGroupedWithStart.length}'
+                    tasksGroupedWithStart.isEmpty? '0/0' : '${_swiperController.index+1}/${tasksGroupedWithStart.length}',
+                    style: TextStyle(
+                      fontSize: phoneWidth/40
+                    ),
                   ),
                 )
               ],
@@ -255,7 +266,7 @@ class _UpcomingTaskState extends State<UpcomingTask> {
             ),
             upcomingTask.isNotEmpty
             ?SizedBox(
-              height: phoneWidth/7.5 + phoneWidth/7.5 * maxItems,
+              height: phoneWidth/9 + phoneWidth/8.25 * maxItems,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20), // Rounded corners
                 child: Swiper(
@@ -301,7 +312,7 @@ class _UpcomingTaskState extends State<UpcomingTask> {
                                     child: Text(
                                       startsAt,
                                       style: TextStyle(
-                                        fontSize: phoneWidth / 25,
+                                        fontSize: phoneWidth / 40,
                                       ),
                                     ),
                                   ),
@@ -314,7 +325,7 @@ class _UpcomingTaskState extends State<UpcomingTask> {
                                     child: Text(
                                       'STARTS',
                                       style: TextStyle(
-                                          fontSize: phoneWidth / 50,
+                                          fontSize: phoneWidth / 60,
                                           decoration: TextDecoration.underline,
                                           decorationColor: Theme.of(context)
                                               .colorScheme
@@ -361,7 +372,7 @@ class _UpcomingTaskState extends State<UpcomingTask> {
                                                       TextOverflow.ellipsis,
                                                   style: TextStyle(
                                                       fontSize:
-                                                          phoneWidth / 26),
+                                                          phoneWidth / 27.5),
                                                 ),
                                               )
                                             ],
@@ -379,7 +390,7 @@ class _UpcomingTaskState extends State<UpcomingTask> {
                 ),
               ),
             ) : Center(
-                    child: Text("~~ enjoy your peacefull life ~~"),
+                    child: Text("~~ enjoy your peaceful life ~~"),
                   ),
           ],
         );
