@@ -4,6 +4,7 @@
 
 - **Basic Task Management:**
   - Create, edit, delete, and mark tasks as finished.
+  - Daily Task Option
 
 - **Search Functionality:**
   - Search tasks by date, name, and category.
@@ -23,9 +24,9 @@
   - Summary of tasks.
   - History of user activity.
 
-- **Special Feature:**
-  - Local Database
-  - Daily task option
+- **Specifications:**
+  - Local databae
+  - No internet needed
 
 
 ## Third Party Packages Dependencies & Development Dependencies:
@@ -40,7 +41,6 @@
 - animated_custom_dropdown
 - action_slider
 - slide_countdown
-- cron
 - card_swiper
 - video_player
 - hive
