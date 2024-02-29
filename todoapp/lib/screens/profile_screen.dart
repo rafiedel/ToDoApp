@@ -419,7 +419,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           },
           decoration: InputDecoration(
             label: const Text('Enter Text'),
-            // hintText: whichController,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10.0),
             ),

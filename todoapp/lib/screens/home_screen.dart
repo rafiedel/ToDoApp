@@ -268,7 +268,7 @@ class _UpcomingTaskState extends State<UpcomingTask> {
             ?SizedBox(
               height: phoneWidth/9 + phoneWidth/8.25 * maxItems,
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(20), // Rounded corners
+                borderRadius: BorderRadius.circular(20), 
                 child: Swiper(
                   controller: _swiperController,
                   onIndexChanged: (value) {

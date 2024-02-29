@@ -214,7 +214,7 @@ class _DetailScrenState extends State<DetailScren> {
                                                 const Duration(milliseconds: 1000),
                                                 () {
                                               Navigator.of(context).pop(
-                                                  true); // Closing the dialog after 2 seconds
+                                                  true); 
                                             });
                                             return AlertDialog(
                                               contentPadding: const EdgeInsets.all(0),
@@ -545,7 +545,7 @@ class _DetailScrenState extends State<DetailScren> {
                             ),
                           ),
                           action: (controller) async {
-                            controller.loading(); //starts loading animation
+                            controller.loading(); 
                             int targetedIndex = taskList.indexOf(task);
                             taskList[targetedIndex] = Task(
                                 id: state.task.id,
@@ -561,7 +561,7 @@ class _DetailScrenState extends State<DetailScren> {
                             BlocProvider.of<TaskListCubit>(context).refreshTaskList();
                             BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
                             await Future.delayed(const Duration(seconds: 1));
-                            controller.success(); //starts success animation
+                            controller.success(); 
                             await Future.delayed(const Duration(milliseconds: 1500));
                             Navigator.pushAndRemoveUntil(
                                 // ignore: use_build_context_synchronously

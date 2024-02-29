@@ -142,20 +142,23 @@ class _CreateTaskButton extends State<CreateTaskButton> {
                           SizedBox(
                             height: phoneWidth / 20,
                           ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: <Widget>[
-                              SectionLabel('Top Priority?'),
-                              Switch(
-                                inactiveTrackColor: Colors.blue,
-                                activeColor: Colors.red,
-                                value: state.newTask.isTopPriority, 
-                                onChanged: (value) {
-                                  BlocProvider.of<CreateTaskCubit>(context).setTopPriority(!state.newTask.isTopPriority);
-                                }
-                              ),
-                              SizedBox(width: phoneWidth/30,)
-                            ],
+                          Visibility(
+                            visible: state.newTask.category != 'Daily',
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: <Widget>[
+                                SectionLabel('Top Priority?'),
+                                Switch(
+                                  inactiveTrackColor: Colors.blue,
+                                  activeColor: Colors.red,
+                                  value: state.newTask.isTopPriority, 
+                                  onChanged: (value) {
+                                    BlocProvider.of<CreateTaskCubit>(context).setTopPriority(!state.newTask.isTopPriority);
+                                  }
+                                ),
+                                SizedBox(width: phoneWidth/30,)
+                              ],
+                            ),
                           ),
                         ],
                       ),

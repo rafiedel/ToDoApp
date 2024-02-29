@@ -108,7 +108,7 @@ class TaskCustomizeTile extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.circle,
-                        color: task.isTopPriority ? Colors.red : Colors.blue,
+                        color: task.category == 'Daily'? Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5) : (task.isTopPriority ? Colors.red : Colors.blue),
                         size: phoneWidth / 40,
                       ),
                       SizedBox(

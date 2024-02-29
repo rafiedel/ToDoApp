@@ -51,7 +51,7 @@ class _SearchScreenState extends State<SearchScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: SingleChildScrollView( // Wrap with SingleChildScrollView
+          child: SingleChildScrollView( 
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -94,27 +94,6 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           );
         },
-      //   outsideBuilder: (context, day, focusedDay){
-      //     return Center(
-      //       child: Text(
-      //         DateFormat('dd').format(day),
-      //         style: TextStyle(
-      //           fontSize: phoneWidth/40,
-      //           color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5)
-      //         ),
-      //       ),
-      //     );
-      //   },
-      //   defaultBuilder: (context, day, focusedDay) {
-      //     return Center(
-      //       child: Text(
-      //         DateFormat('dd').format(day),
-      //         style: TextStyle(
-      //           fontSize: phoneWidth/30
-      //         ),
-      //       ),
-      //     );
-      //   },
         todayBuilder: (context, day, focusedDay) {
           return Container(
             margin: EdgeInsets.all(phoneWidth/40),
@@ -279,7 +258,7 @@ class _SearchScreenState extends State<SearchScreen> {
       padding: EdgeInsets.symmetric(horizontal: phoneWidth/35),
       height: phoneWidth/8,
       decoration: BoxDecoration(
-        border: Border.all(color: Theme.of(context).colorScheme.inversePrimary), // Adjust border color
+        border: Border.all(color: Theme.of(context).colorScheme.inversePrimary),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -296,9 +275,9 @@ class _SearchScreenState extends State<SearchScreen> {
                 fontSize: phoneWidth/30
               ),
               decoration: InputDecoration(
-                border: InputBorder.none, // Hide TextField border
-                hintText: 'Search', // Add a placeholder
-                hintStyle: TextStyle(color: Theme.of(context).colorScheme.inversePrimary), // Hint text color
+                border: InputBorder.none, 
+                hintText: 'Search', 
+                hintStyle: TextStyle(color: Theme.of(context).colorScheme.inversePrimary), 
               ),
             ),
           ),
@@ -413,7 +392,7 @@ class _SearchScreenState extends State<SearchScreen> {
             size: phoneWidth / 15,
             color: Theme.of(context)
                 .colorScheme
-                .inversePrimary), // Adjust icon color
+                .inversePrimary), 
       ),
     );
   }
