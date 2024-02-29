@@ -23,6 +23,11 @@
   - Summary of tasks.
   - History of user activity.
 
+- **Special Feature:**
+  - Local Database
+  - Daily task option
+
+
 ## Third Party Packages Dependencies & Development Dependencies:
 
 - flutter_bloc
