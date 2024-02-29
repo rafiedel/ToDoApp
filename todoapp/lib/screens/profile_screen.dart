@@ -292,8 +292,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               scale: 0.75,
               child: Switch(
                   value: state.isDarkMode,
-                  onChanged: (value) =>
-                      BlocProvider.of<ThemeCubit>(context).changeTheme()),
+                  onChanged: (value) {
+                      BlocProvider.of<ThemeCubit>(context).changeTheme();
+                      BlocProvider.of<UserCubit>(context).changeTheme();
+                  }),
             ),
           ),
           title: Text('Dark Mode', style: TextStyle(fontSize: phoneWidth/35),),
@@ -341,7 +343,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           title: Text('Display Profile Picture', style: TextStyle(fontSize: phoneWidth/45),),
           trailing: GestureDetector(
               onTap: () => pickImageFromGallery('pp'),
-              child: Text(state.user.homeTopBarBG != ''
+              child: Text(state.user.profilePicture != ''
                   ? 'set'
                   : 'not set', style: TextStyle(fontSize: phoneWidth/40),)),
         );

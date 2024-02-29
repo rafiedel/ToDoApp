@@ -1,4 +1,6 @@
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todoapp/data/database.dart';
+import 'package:todoapp/logic/theme_cubit.dart';
 import 'package:todoapp/screens/home_screen.dart';
 import 'package:todoapp/screens/profile_screen.dart';
 import 'package:todoapp/screens/search_screen.dart';
@@ -46,6 +48,9 @@ class _MainScreenNavigatorState extends State<MainScreenNavigator> {
     }
     else{
       loadData();
+    }
+    if (currentUser.lastThemeData == 'lightMode') {
+      BlocProvider.of<ThemeCubit>(context).changeTheme();
     }
     saveData();
     super.initState();

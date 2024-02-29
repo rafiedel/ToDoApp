@@ -1,3 +1,4 @@
+import 'package:todoapp/data/database.dart';
 import 'package:todoapp/themes/dark_mode.dart';
 import 'package:todoapp/themes/light_mode.dart';
 import 'package:flutter/material.dart';
@@ -24,5 +25,6 @@ class ThemeCubit extends Cubit<ThemeState>{
     else if (state.currentTheme == darkMode) {
       emit(ThemeState(currentTheme: lightMode, isDarkMode: false));
     }
+    saveData();
   }
 }

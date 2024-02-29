@@ -61,12 +61,15 @@ class User{
   String homeTopBarBG;
   @HiveField(3)
   DateTime lastLogin;
+  @HiveField(4)
+  String lastThemeData;
 
   User({
     required this.displayName,
     required this.profilePicture,
     required this.homeTopBarBG,
-    required this.lastLogin
+    required this.lastLogin,
+    required this.lastThemeData
   });
 }
 
@@ -74,7 +77,7 @@ class User{
 List<Task> sampleTaskList= [];
 List<Task> taskList = [];
 List<History> userHistoryList = [];
-User currentUser = User(displayName: 'User', profilePicture: '' ,homeTopBarBG: '', lastLogin: DateTime.now());
+User currentUser = User(displayName: 'User', profilePicture: '' ,homeTopBarBG: '', lastLogin: DateTime.now(), lastThemeData: 'darkMode');
 
 final myBox = Hive.box('mybox');
 
@@ -508,7 +511,8 @@ void loadData() {
       displayName: currentUser.displayName, 
       profilePicture: currentUser.profilePicture, 
       homeTopBarBG: currentUser.homeTopBarBG, 
-      lastLogin: DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day)
+      lastLogin: DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day),
+      lastThemeData: currentUser.lastThemeData
     );
   }
 }
