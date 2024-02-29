@@ -18,7 +18,7 @@ class ViewSummaryTask extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        title: Text('$tasksTitle TASKS'),
+        title: Text('$tasksTitle TASKS', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),
         centerTitle: true,
         titleTextStyle: TextStyle(letterSpacing: phoneWidth/100, fontSize: phoneWidth/20, fontWeight: FontWeight.w900),
       ),
