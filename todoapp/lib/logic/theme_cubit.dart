@@ -19,10 +19,10 @@ class ThemeCubit extends Cubit<ThemeState>{
   ThemeCubit() :super(ThemeState(currentTheme: darkMode, isDarkMode: true));
 
   void changeTheme() {
-    if (state.currentTheme == lightMode) {
+    if (state.currentTheme == lightMode && currentUser.lastThemeData == 'darkMode') {
       emit(ThemeState(currentTheme: darkMode, isDarkMode: true));
     }
-    else if (state.currentTheme == darkMode) {
+    else if (state.currentTheme == darkMode && currentUser.lastThemeData == 'lightMode') {
       emit(ThemeState(currentTheme: lightMode, isDarkMode: false));
     }
     saveData();

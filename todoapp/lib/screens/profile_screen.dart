@@ -293,8 +293,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Switch(
                   value: state.isDarkMode,
                   onChanged: (value) {
-                      BlocProvider.of<ThemeCubit>(context).changeTheme();
-                      BlocProvider.of<UserCubit>(context).changeTheme();
+                    BlocProvider.of<UserCubit>(context).changeTheme();
+                    BlocProvider.of<ThemeCubit>(context).changeTheme();
                   }),
             ),
           ),

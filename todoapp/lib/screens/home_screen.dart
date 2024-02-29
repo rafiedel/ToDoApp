@@ -184,7 +184,12 @@ class _HomeScreenState extends State<HomeScreen> {
                         task: task, phoneWidth: phoneWidth);
                   }).toList())
                 : Center(
-                    child: Text("~~ you've done great today ~~"),
+                    child: Text(
+                      "~~ you've done great today ~~",
+                      style: TextStyle(
+                        fontSize: phoneWidth/35
+                      ),
+                    ),
                   )
           ],
         );
@@ -390,7 +395,12 @@ class _UpcomingTaskState extends State<UpcomingTask> {
                 ),
               ),
             ) : Center(
-                    child: Text("~~ enjoy your peaceful life ~~"),
+                    child: Text(
+                      "~~ enjoy your peaceful life ~~",
+                      style: TextStyle(
+                        fontSize: phoneWidth/35
+                      ),
+                    ),
                   ),
           ],
         );
