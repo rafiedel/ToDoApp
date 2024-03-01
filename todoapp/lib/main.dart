@@ -2,6 +2,7 @@ import 'package:todoapp/data/database.dart';
 import 'package:todoapp/logic/create_task_cubit.dart';
 import 'package:todoapp/logic/edit_task_cubit.dart';
 import 'package:todoapp/logic/history_cubit.dart';
+import 'package:todoapp/logic/reorder_daily_task_cubit.dart';
 import 'package:todoapp/logic/search_task_cubit.dart';
 import 'package:todoapp/logic/task_list_cubit.dart';
 import 'package:todoapp/logic/theme_cubit.dart';
@@ -59,6 +60,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => HistoryCubit(),
+        ),
+        BlocProvider(
+          create: (context) => ReOrderDailyTaskCubit(),
         )
       ], 
       child: BlocBuilder<ThemeCubit, ThemeState>(

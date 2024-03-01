@@ -117,7 +117,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         OngoingTaskSection(context),
         SizedBox(
-          height: phoneWidth / 15,
+          height: phoneWidth / 12.5,
         ),
         UpcomingTask()
       ],
@@ -128,10 +128,31 @@ class _HomeScreenState extends State<HomeScreen> {
     double phoneWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<TaskListCubit, TaskListState>(
       builder: (context, state) {
-        List<Task> ongoingTask = state.taskList.where((task) {
-          return DateTime.now().isAfter(task.starts) && DateTime.now().isBefore(task.ends) && task.isDone == false;
-        }).toList();
-        ongoingTask.sort((a,b) => a.ends.compareTo(b.ends));
+        List<Task> sortedOngoingTask = [];
+        List<Task> ongoingTask = state.taskList.where(
+          (task) {
+            return DateTime.now().isAfter(task.starts) &&
+                DateTime.now().isBefore(task.ends) &&
+                task.isDone == false;
+          },
+        ).toList();
+        List<DateTime> allDeadlines = ongoingTask
+            .map((task) => DateTime(task.ends.year, task.ends.month, task.ends.day))
+            .toSet()
+            .toList();
+        allDeadlines.sort((a, b) => a.compareTo(b));
+        for (var deadline in allDeadlines) {
+          List<Task> tasksSorted = ongoingTask.where(
+            (task) {
+              return task.ends.year == deadline.year &&
+                  task.ends.month == deadline.month &&
+                  task.ends.day == deadline.day;
+            },
+          ).toList();
+          tasksSorted.sort((a, b) => a.id.compareTo(b.id));
+          sortedOngoingTask.addAll(tasksSorted);
+        }
+        ongoingTask.sort((a, b) => a.ends.compareTo(b.ends));
         return Column(
           children: [
             Container(
@@ -142,60 +163,70 @@ class _HomeScreenState extends State<HomeScreen> {
                   Text(
                     "Ongoing",
                     style: TextStyle(
-                        fontSize: phoneWidth / 22.5, fontWeight: FontWeight.w400),
+                      fontSize: phoneWidth / 22.5,
+                      fontWeight: FontWeight.w400,
+                    ),
                   ),
                   Visibility(
-                    visible: ongoingTask.length > 3,
+                    visible: ongoingTask.length > 4,
                     child: GestureDetector(
                       onTap: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    const ViewAllOngoingScreen(
-                                        taskSectionName: "ONGOING TASKS")));
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) => const ViewAllOngoingScreen(
+                              taskSectionName: "ONGOING TASKS",
+                            ),
+                          ),
+                        );
                       },
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                            horizontal: phoneWidth / 50,
-                            vertical: phoneWidth / 200),
+                          horizontal: phoneWidth / 50,
+                          vertical: phoneWidth / 200,
+                        ),
                         decoration: BoxDecoration(
-                            color: Theme.of(context).colorScheme.tertiary,
-                            borderRadius: BorderRadius.circular(5)),
+                          color: Theme.of(context).colorScheme.tertiary,
+                          borderRadius: BorderRadius.circular(5),
+                        ),
                         child: Text(
                           'View All',
                           style: TextStyle(
-                            fontSize: phoneWidth/40
+                            fontSize: phoneWidth / 40,
                           ),
                         ),
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
             SizedBox(
               height: phoneWidth / 50,
             ),
-            ongoingTask.isNotEmpty
+            sortedOngoingTask.isNotEmpty
                 ? Column(
-                    children: ongoingTask.take(3).map((task) {
-                    return TaskCustomizeTile(
-                        task: task, phoneWidth: phoneWidth);
-                  }).toList())
+                    children: sortedOngoingTask.take(4).map((task) {
+                      return TaskCustomizeTile(
+                        task: task,
+                        phoneWidth: phoneWidth,
+                      );
+                    }).toList(),
+                  )
                 : Center(
                     child: Text(
                       "~~ you've done great today ~~",
                       style: TextStyle(
-                        fontSize: phoneWidth/35
+                        fontSize: phoneWidth / 35,
                       ),
                     ),
-                  )
+                  ),
           ],
         );
       },
     );
   }
+
 }
 
 
@@ -256,7 +287,7 @@ class _UpcomingTaskState extends State<UpcomingTask> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.symmetric(horizontal: phoneWidth / 30),
+                  margin: EdgeInsets.symmetric(horizontal: phoneWidth / 25),
                   child: Text(
                     tasksGroupedWithStart.isEmpty? '0/0' : '${_swiperController.index+1}/${tasksGroupedWithStart.length}',
                     style: TextStyle(

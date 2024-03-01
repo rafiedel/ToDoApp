@@ -23,9 +23,9 @@ class TaskCustomizeTile extends StatelessWidget {
                     )));
       },
       child: Container(
-        height: MediaQuery.of(context).size.height / 10.5,
+        height: MediaQuery.of(context).size.height / 12.5,
         margin: EdgeInsets.symmetric(
-            vertical: phoneWidth / 40, horizontal: phoneWidth / 30),
+            vertical: phoneWidth / 60, horizontal: phoneWidth / 30),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Theme.of(context).colorScheme.secondary,
@@ -82,18 +82,18 @@ class TaskCustomizeTile extends StatelessWidget {
                           ],
                         ),
                         Container(
-                          width: phoneWidth / 1.5,
+                          width: phoneWidth / 1.25,
                           child: Text(
                             task.description.isNotEmpty
                                 ? task.description
-                                : " ~~ N O  D E S C R I P T O N ~~",
-                            maxLines: 2,
+                                : " . . . . . .",
+                            maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 decoration: task.isDone
                                     ? TextDecoration.lineThrough
                                     : TextDecoration.none,
-                                fontSize: phoneWidth / 40,
+                                fontSize: phoneWidth / 42.5,
                                 color: Theme.of(context)
                                     .colorScheme
                                     .inversePrimary
@@ -108,7 +108,7 @@ class TaskCustomizeTile extends StatelessWidget {
                     children: [
                       Icon(
                         Icons.circle,
-                        color: task.category == 'Daily'? Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5) : (task.isTopPriority ? Colors.red : Colors.blue),
+                        color: task.category == 'Daily'? Theme.of(context).colorScheme.inversePrimary.withOpacity(0.75) : (task.isTopPriority ? Colors.red : Colors.blue),
                         size: phoneWidth / 40,
                       ),
                       SizedBox(

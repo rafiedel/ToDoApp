@@ -17,6 +17,10 @@ class ViewSummaryTask extends StatelessWidget {
     double phoneWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Icon(Icons.arrow_back_ios, size: phoneWidth/25,),
+        ),
         backgroundColor: Colors.transparent,
         title: Text('$tasksTitle TASKS', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),
         centerTitle: true,

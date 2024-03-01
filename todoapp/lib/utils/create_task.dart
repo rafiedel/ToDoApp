@@ -6,6 +6,7 @@ import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:todoapp/data/database.dart';
 import 'package:todoapp/logic/create_task_cubit.dart';
 import 'package:todoapp/logic/history_cubit.dart';
+import 'package:todoapp/logic/reorder_daily_task_cubit.dart';
 import 'package:todoapp/logic/search_task_cubit.dart';
 import 'package:todoapp/logic/task_list_cubit.dart';
 import 'package:flutter/material.dart';
@@ -473,6 +474,7 @@ class _CreateTaskButton extends State<CreateTaskButton> {
                   BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
                   BlocProvider.of<CreateTaskCubit>(context).refreshState();
                   BlocProvider.of<HistoryCubit>(context).createTask(_nameController.text, newTaskState.newTask.id);
+                  BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
                   _nameController.clear();
                   _descriptionController.clear();
                   Navigator.pop(context);

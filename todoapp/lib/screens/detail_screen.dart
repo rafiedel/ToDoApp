@@ -6,6 +6,7 @@ import 'package:animated_custom_dropdown/custom_dropdown.dart';
 import 'package:todoapp/data/database.dart';
 import 'package:todoapp/logic/edit_task_cubit.dart';
 import 'package:todoapp/logic/history_cubit.dart';
+import 'package:todoapp/logic/reorder_daily_task_cubit.dart';
 import 'package:todoapp/logic/search_task_cubit.dart';
 import 'package:todoapp/logic/task_list_cubit.dart';
 import 'package:todoapp/router/main_screen_navigator.dart';
@@ -205,6 +206,7 @@ class _DetailScrenState extends State<DetailScren> {
                                         BlocProvider.of<SearchTaskCubit>(
                                                 context)
                                             .refreshTaskList();
+                                        BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
                                       } else {
                                         showDialog(
                                           context: context,
@@ -560,6 +562,7 @@ class _DetailScrenState extends State<DetailScren> {
                                 .finishTask(state.task.name, task.id);
                             BlocProvider.of<TaskListCubit>(context).refreshTaskList();
                             BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
+                            BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
                             await Future.delayed(const Duration(seconds: 1));
                             controller.success(); 
                             await Future.delayed(const Duration(milliseconds: 1500));

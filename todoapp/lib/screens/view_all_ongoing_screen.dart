@@ -68,7 +68,7 @@ class ViewAllOngoingScreen extends StatelessWidget {
         allDeadlines.sort((a,b) => a.compareTo(b));
         List<Map> tasksGroupedWithDeadline = allDeadlines.map(
           (deadline) {
-            List tasksSorted = ongoingTask.where(
+            List<Task> tasksSorted = ongoingTask.where(
               (task) {
                 return task.ends.year == deadline.year &&
                        task.ends.month == deadline.month &&
@@ -130,7 +130,8 @@ class ViewAllOngoingScreen extends StatelessWidget {
                         }
                       ).toList(),
                     ),
-                  )
+                  ),
+                  SizedBox(height: phoneWidth/25,)
                 ],
               );
             }

@@ -56,9 +56,9 @@ class _SearchScreenState extends State<SearchScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 CalenderSearchTool(),
-                SizedBox(height: phoneWidth/20,),
+                SizedBox(height: phoneWidth/50,),
                 SearchTools(),
-                SizedBox(height: phoneWidth/100), 
+                SizedBox(height: phoneWidth/30), 
                 TaskSearched()
               ],
             ),
@@ -211,6 +211,7 @@ class _SearchScreenState extends State<SearchScreen> {
           _selectedDay = DateTime.now();
           _focusedDay = DateTime.now();
           _refresh = true;
+          _searchController.clear();
           refreshCategory();
           BlocProvider.of<SearchTaskCubit>(context).clearCategorySelected();
           BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
