@@ -56,6 +56,7 @@ class TaskCustomizeTile extends StatelessWidget {
                                     decoration: task.isDone
                                         ? TextDecoration.lineThrough
                                         : TextDecoration.none,
+                                    decorationColor: Theme.of(context).colorScheme.inversePrimary,
                                     fontSize: phoneWidth / 27.5),
                               ),
                             ),
@@ -76,6 +77,7 @@ class TaskCustomizeTile extends StatelessWidget {
                                   decoration: task.isDone
                                       ? TextDecoration.lineThrough
                                       : TextDecoration.none,
+                                  decorationColor: Theme.of(context).colorScheme.inversePrimary,
                                 ),
                               ),
                             ),
@@ -93,6 +95,7 @@ class TaskCustomizeTile extends StatelessWidget {
                                 decoration: task.isDone
                                     ? TextDecoration.lineThrough
                                     : TextDecoration.none,
+                                decorationColor: Theme.of(context).colorScheme.inversePrimary,
                                 fontSize: phoneWidth / 42.5,
                                 color: Theme.of(context)
                                     .colorScheme

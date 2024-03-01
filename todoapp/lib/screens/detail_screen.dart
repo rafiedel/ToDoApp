@@ -154,7 +154,7 @@ class _DetailScrenState extends State<DetailScren> {
                         },
                         icon: const Icon(Icons.arrow_back_ios)),
                   ),
-                  !task.isDone
+                  !task.isDone || task.category == 'Daily'
                       ? Row(
                           children: [
                             Padding(
@@ -292,6 +292,7 @@ class _DetailScrenState extends State<DetailScren> {
               borderRadius: BorderRadius.circular(10))
           : const BoxDecoration(),
       child: TextField(
+        readOnly: task.isDone? true : false,
         controller: controller,
         onChanged: (value) {
           setState(() {
@@ -312,6 +313,7 @@ class _DetailScrenState extends State<DetailScren> {
         style: TextStyle(
             decoration:
                 task.isDone ? TextDecoration.lineThrough : TextDecoration.none,
+            decorationColor: Theme.of(context).colorScheme.inversePrimary,
             fontSize:
                 whichController == 'name' ? phoneWidth /20 : phoneWidth / 30,
             fontWeight:
@@ -345,6 +347,8 @@ class _DetailScrenState extends State<DetailScren> {
                   child: Text(
                     label,
                     style: TextStyle(
+                        decoration: task.isDone? TextDecoration.lineThrough : TextDecoration.none,
+                        decorationColor: Theme.of(context).colorScheme.inversePrimary,
                         fontSize: phoneWidth/35,
                         fontWeight: FontWeight.bold,
                         shadows: List.generate(10, (index) {
@@ -406,6 +410,8 @@ class _DetailScrenState extends State<DetailScren> {
                         child: Text(
                           value,
                           style: TextStyle(
+                            decoration: task.isDone? TextDecoration.lineThrough : TextDecoration.none,
+                            decorationColor: Theme.of(context).colorScheme.inversePrimary,
                             fontSize: phoneWidth/35,
                               fontWeight: FontWeight.bold,
                               shadows: List.generate(10, (index) {
@@ -523,57 +529,60 @@ class _DetailScrenState extends State<DetailScren> {
                   return Center(
                     child: Container(
                         margin: EdgeInsets.symmetric(horizontal: phoneWidth / 20),
-                        child: ActionSlider.standard(
-                          sliderBehavior: SliderBehavior.stretch,
-                          direction: ui.TextDirection.rtl,
-                          rolling: true,
-                          icon: const Icon(Icons.check),
-                          backgroundBorderRadius: BorderRadius.circular(10),
-                          foregroundBorderRadius: BorderRadius.circular(10),
-                          backgroundColor: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8),
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).colorScheme.inversePrimary,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: Text(
-                                ' <~~~  Slide to Finish',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  color: Theme.of(context).colorScheme.background
+                        child: Visibility(
+                          visible: !task.isDone,
+                          child: ActionSlider.standard(
+                            sliderBehavior: SliderBehavior.stretch,
+                            direction: ui.TextDirection.rtl,
+                            rolling: true,
+                            icon: const Icon(Icons.check),
+                            backgroundBorderRadius: BorderRadius.circular(10),
+                            foregroundBorderRadius: BorderRadius.circular(10),
+                            backgroundColor: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).colorScheme.inversePrimary,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  ' <~~~  Slide to Finish',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).colorScheme.background
+                                  ),
                                 ),
                               ),
                             ),
+                            action: (controller) async {
+                              controller.loading(); 
+                              int targetedIndex = taskList.indexOf(task);
+                              taskList[targetedIndex] = Task(
+                                  id: state.task.id,
+                                  name: state.task.name,
+                                  description: state.task.description,
+                                  isDone: true,
+                                  isTopPriority: state.task.isTopPriority,
+                                  starts: state.task.starts,
+                                  ends: state.task.ends,
+                                  category: state.task.category);
+                              BlocProvider.of<HistoryCubit>(context)
+                                  .finishTask(state.task.name, task.id);
+                              BlocProvider.of<TaskListCubit>(context).refreshTaskList();
+                              BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
+                              BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
+                              await Future.delayed(const Duration(seconds: 1));
+                              controller.success(); 
+                              await Future.delayed(const Duration(milliseconds: 1500));
+                              Navigator.pushAndRemoveUntil(
+                                  // ignore: use_build_context_synchronously
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          const MainScreenNavigator()),
+                                  (Route<dynamic> route) => false);
+                            },
                           ),
-                          action: (controller) async {
-                            controller.loading(); 
-                            int targetedIndex = taskList.indexOf(task);
-                            taskList[targetedIndex] = Task(
-                                id: state.task.id,
-                                name: state.task.name,
-                                description: state.task.description,
-                                isDone: true,
-                                isTopPriority: state.task.isTopPriority,
-                                starts: state.task.starts,
-                                ends: state.task.ends,
-                                category: state.task.category);
-                            BlocProvider.of<HistoryCubit>(context)
-                                .finishTask(state.task.name, task.id);
-                            BlocProvider.of<TaskListCubit>(context).refreshTaskList();
-                            BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
-                            BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
-                            await Future.delayed(const Duration(seconds: 1));
-                            controller.success(); 
-                            await Future.delayed(const Duration(milliseconds: 1500));
-                            Navigator.pushAndRemoveUntil(
-                                // ignore: use_build_context_synchronously
-                                context,
-                                MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        const MainScreenNavigator()),
-                                (Route<dynamic> route) => false);
-                          },
                         )),
                   );
                 },
@@ -586,7 +595,8 @@ class _DetailScrenState extends State<DetailScren> {
   }
 
   void ChooseCategory(double phoneWidth) {
-    showDialog(
+    if (!task.isDone) {
+      showDialog(
         context: context,
         builder: (context) {
           return BlocBuilder<TaskListCubit, TaskListState>(
@@ -629,26 +639,29 @@ class _DetailScrenState extends State<DetailScren> {
             );
           });
         });
+    }
   }
 
   void ShowDatePicker(context, DateTime date, String whichDate,DateTime taskStartsAt, EditTaskState originalTask) {
-    showDatePicker(
-      context: context,
-      initialDate: date,
-      firstDate: whichDate == 'ends'
-          ? taskStartsAt.add(const Duration(days: 1))
-          : DateTime.now(),
-      lastDate: DateTime(2030),
-    ).then((result) {
-      setState(() {
-        if (whichDate == 'ends') {
-          task.ends = result!;
-        } else if (whichDate == 'starts') {
-          task.starts = result!;
-          task.ends = result.add(const Duration(days: 1));
-        }
+    if (!task.isDone) {
+      showDatePicker(
+        context: context,
+        initialDate: date,
+        firstDate: whichDate == 'ends'
+            ? taskStartsAt.add(const Duration(days: 1))
+            : DateTime.now(),
+        lastDate: DateTime(2030),
+      ).then((result) {
+        setState(() {
+          if (whichDate == 'ends') {
+            task.ends = result!;
+          } else if (whichDate == 'starts') {
+            task.starts = result!;
+            task.ends = result.add(const Duration(days: 1));
+          }
+        });
+        BlocProvider.of<EditTaskCubit>(context).upForChange(true, task);
       });
-      BlocProvider.of<EditTaskCubit>(context).upForChange(true, task);
-    });
+    }
   }
 }

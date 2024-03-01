@@ -49,7 +49,7 @@ class ManageDailyTasks extends StatelessWidget {
                         Navigator.push(context, MaterialPageRoute(builder: (BuildContext context) => DetailScren(task: task)));
                       },
                       key: ValueKey(task.name),
-                      title: Text(task.name, style: TextStyle(fontSize: phoneWidth / 30)),
+                      title: Text(task.name, style: TextStyle(fontSize: phoneWidth / 30, decoration: task.isDone == true? TextDecoration.lineThrough : TextDecoration.none, decorationColor: Theme.of(context).colorScheme.inversePrimary,)),
                       trailing: Icon(Icons.menu, size: phoneWidth / 25),
                     ),
                 ],
