@@ -235,7 +235,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
           BlocBuilder<HistoryCubit, HistoryState>(
             builder: (context, state) {
               return DataTable(
-                dataRowMaxHeight: phoneWidth / 12.5,
                 columnSpacing: phoneWidth / 8.5,
                 columns: [
                   DataColumn(
