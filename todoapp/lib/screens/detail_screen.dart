@@ -501,6 +501,7 @@ class _DetailScrenState extends State<DetailScren> {
                             taskList.removeWhere((targetedTask) => targetedTask.id == task.id);
                             BlocProvider.of<TaskListCubit>(context).refreshTaskList();
                             BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
+                            BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
                             Navigator.pushAndRemoveUntil(
                               context, 
                               MaterialPageRoute(builder: (BuildContext context) => const MainScreenNavigator()), 
