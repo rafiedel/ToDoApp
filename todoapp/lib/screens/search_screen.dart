@@ -357,7 +357,10 @@ class _SearchScreenState extends State<SearchScreen> {
                             size: phoneWidth/30, 
                           )
                         : Text(
-                          state.taskBeingSearched[index].starts.day == _selectedDay.day? "STARTS" : "ENDS"
+                          state.taskBeingSearched[index].starts.day == _selectedDay.day? "STARTS" : "ENDS",
+                          style: TextStyle(
+                            fontSize: phoneWidth/40
+                          ),
                           ),
                     ],
                   ),
