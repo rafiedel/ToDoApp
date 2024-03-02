@@ -89,142 +89,144 @@ class ImagesRelatedScreen extends StatelessWidget {
             Task task =
                 state.taskList.singleWhere((task) => task.id == whichTask.id);
             List<String> imagesRelated = task.imagesRelated;
-            return Column(
-              children: [
-                SizedBox(height: phoneWidth/20,),
-                Wrap(
-                  children: List.generate(
-                    imagesRelated.length + 1,
-                    (index) {
-                      return GestureDetector(
-                        onTap: () {
-                          if (!task.isDone) {
-                            if (index == imagesRelated.length) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  backgroundColor: Theme.of(context).colorScheme.secondary,
-                                  behavior: SnackBarBehavior.fixed,
-                                  content: Column(
-                                    children: [
-                                      MaterialButton(
-                                        color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                        onPressed: () {
-                                          pickImage(task, context, ImageSource.camera);
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Icon(Icons.camera, size: phoneWidth/17.5),
-                                            SizedBox(width: phoneWidth/20),
-                                            Text('C A M E R A', style: TextStyle(fontSize: phoneWidth/25),)
-                                          ],
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  SizedBox(height: phoneWidth/20,),
+                  Wrap(
+                    children: List.generate(
+                      imagesRelated.length + 1,
+                      (index) {
+                        return GestureDetector(
+                          onTap: () {
+                            if (!task.isDone) {
+                              if (index == imagesRelated.length) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    backgroundColor: Theme.of(context).colorScheme.secondary,
+                                    behavior: SnackBarBehavior.fixed,
+                                    content: Column(
+                                      children: [
+                                        MaterialButton(
+                                          color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                          onPressed: () {
+                                            pickImage(task, context, ImageSource.camera);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Icon(Icons.camera, size: phoneWidth/17.5),
+                                              SizedBox(width: phoneWidth/20),
+                                              Text('C A M E R A', style: TextStyle(fontSize: phoneWidth/25),)
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(height: phoneWidth/50,),
-                                      MaterialButton(
-                                        color: Theme.of(context).colorScheme.tertiary,
-                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                        onPressed: () {
-                                          pickImage(task, context, ImageSource.gallery);
-                                        },
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: <Widget>[
-                                            Icon(Icons.image, size: phoneWidth/17.5),
-                                            SizedBox(width: phoneWidth/20),
-                                            Text('G A L L E R Y', style: TextStyle(fontSize: phoneWidth/25),)
-                                          ],
+                                        SizedBox(height: phoneWidth/50,),
+                                        MaterialButton(
+                                          color: Theme.of(context).colorScheme.tertiary,
+                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                          onPressed: () {
+                                            pickImage(task, context, ImageSource.gallery);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.center,
+                                            children: <Widget>[
+                                              Icon(Icons.image, size: phoneWidth/17.5),
+                                              SizedBox(width: phoneWidth/20),
+                                              Text('G A L L E R Y', style: TextStyle(fontSize: phoneWidth/25),)
+                                            ],
+                                          ),
                                         ),
-                                      ),
-                                      SizedBox(height: phoneWidth/100,)
-                                    ],
-                                  ),
-                                )
-                              );
-                            } else {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (BuildContext context) => ViewImages(initialIndex: index, imagesString: imagesRelated,))
-                              );
+                                        SizedBox(height: phoneWidth/100,)
+                                      ],
+                                    ),
+                                  )
+                                );
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (BuildContext context) => ViewImages(initialIndex: index, imagesString: imagesRelated,))
+                                );
+                              }
                             }
-                          }
-                        },
-                        child: Stack(
-                          children: [
-                            Hero(
-                              tag: '$index',
-                              child: Container(
-                                height: phoneWidth / 3.3,
-                                width: phoneWidth / 3.3,
-                                margin: EdgeInsets.all(phoneWidth / 70),
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10),
-                                    image: index < imagesRelated.length
-                                        ? DecorationImage(
-                                          fit: BoxFit.cover,
-                                            image: MemoryImage(
-                                              Uint8List.fromList(
-                                                imagesRelated[index].codeUnits,
+                          },
+                          child: Stack(
+                            children: [
+                              Hero(
+                                tag: '$index',
+                                child: Container(
+                                  height: phoneWidth / 3.3,
+                                  width: phoneWidth / 3.3,
+                                  margin: EdgeInsets.all(phoneWidth / 70),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(10),
+                                      image: index < imagesRelated.length
+                                          ? DecorationImage(
+                                            fit: BoxFit.cover,
+                                              image: MemoryImage(
+                                                Uint8List.fromList(
+                                                  imagesRelated[index].codeUnits,
+                                                ),
                                               ),
-                                            ),
+                                            )
+                                          : null,
+                                      color: Theme.of(context).colorScheme.secondary),
+                                  child: index == imagesRelated.length
+                                      ? task.isDone
+                                        ? const Expanded(child: Center(child: Text('FINISHED TASK', maxLines: null,)))
+                                        : Icon(
+                                            Icons.add,
+                                            size: phoneWidth / 10,
+                                            color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8),
                                           )
-                                        : null,
-                                    color: Theme.of(context).colorScheme.secondary),
-                                child: index == imagesRelated.length
-                                    ? task.isDone
-                                      ? const Expanded(child: Center(child: Text('FINISHED TASK', maxLines: null,)))
-                                      : Icon(
-                                          Icons.add,
-                                          size: phoneWidth / 10,
-                                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8),
-                                        )
-                                    : null,
-                              ),
-                            ),
-                            index != imagesRelated.length
-                            ? Positioned(
-                              right: 0,
-                              top: 0,
-                              child: Transform.translate(
-                                offset: Offset(phoneWidth/60, 0),
-                                child: PopupMenuButton(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10)
-                                  ),
-                                  onSelected: (value) {
-                                    if (value == 'delete') {
-                                      int targetedIndex = taskList.indexWhere((targetedTask) => targetedTask.id == task.id);
-                                      Task newTask = taskList[targetedIndex];
-                                      newTask.imagesRelated.removeAt(index);
-                                      taskList[targetedIndex] = newTask;
-                                      BlocProvider.of<TaskListCubit>(context).refreshTaskList();
-                                      BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
-                                      BlocProvider.of<HistoryCubit>(context).updateTask(newTask.name, newTask.id);
-                                      BlocProvider.of<EditTaskCubit>(context).initTask(newTask);
-                                    }
-                                  },
-                                  itemBuilder: (context) => [
-                                    const PopupMenuItem(
-                                      value: 'delete',
-                                      child: Row(
-                                        children: <Widget>[
-                                          Icon(Icons.delete),
-                                          Text('delete image')
-                                        ],
-                                      ),
-                                    )
-                                  ],
+                                      : null,
                                 ),
                               ),
-                            ) : const SizedBox.shrink()
-                          ],
-                        ),
-                      );
-                    },
+                              index != imagesRelated.length
+                              ? Positioned(
+                                right: 0,
+                                top: 0,
+                                child: Transform.translate(
+                                  offset: Offset(phoneWidth/60, 0),
+                                  child: PopupMenuButton(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10)
+                                    ),
+                                    onSelected: (value) {
+                                      if (value == 'delete') {
+                                        int targetedIndex = taskList.indexWhere((targetedTask) => targetedTask.id == task.id);
+                                        Task newTask = taskList[targetedIndex];
+                                        newTask.imagesRelated.removeAt(index);
+                                        taskList[targetedIndex] = newTask;
+                                        BlocProvider.of<TaskListCubit>(context).refreshTaskList();
+                                        BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
+                                        BlocProvider.of<HistoryCubit>(context).updateTask(newTask.name, newTask.id);
+                                        BlocProvider.of<EditTaskCubit>(context).initTask(newTask);
+                                      }
+                                    },
+                                    itemBuilder: (context) => [
+                                      const PopupMenuItem(
+                                        value: 'delete',
+                                        child: Row(
+                                          children: <Widget>[
+                                            Icon(Icons.delete),
+                                            Text('delete image')
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ) : const SizedBox.shrink()
+                            ],
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             );
           },
         ),
