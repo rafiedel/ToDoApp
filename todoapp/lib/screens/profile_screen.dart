@@ -100,11 +100,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     double phoneWidth = MediaQuery.of(context).size.width;
-    return Stack(
-      children: [
-        ProfileContent(context, phoneWidth),
-        AboutMeButton(context, phoneWidth)
-      ],
+    return GestureDetector(
+      onTap: () => ScaffoldMessenger.of(context).hideCurrentSnackBar(),
+      child: Scaffold(
+        body: Stack(
+          children: [
+            ProfileContent(context, phoneWidth),
+            AboutMeButton(context, phoneWidth)
+          ],
+        ),
+      ),
     );
   }
 
