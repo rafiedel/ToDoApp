@@ -148,33 +148,73 @@ class ImagesRelatedScreen extends StatelessWidget {
                             );
                           }
                         },
-                        child: Hero(
-                          tag: '$index',
-                          child: Container(
-                            height: phoneWidth / 3.3,
-                            width: phoneWidth / 3.3,
-                            margin: EdgeInsets.all(phoneWidth / 70),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                image: index < imagesRelated.length
-                                    ? DecorationImage(
-                                      fit: BoxFit.cover,
-                                        image: MemoryImage(
-                                          Uint8List.fromList(
-                                            imagesRelated[index].codeUnits,
-                                          ),
-                                        ),
+                        child: Stack(
+                          children: [
+                            Hero(
+                              tag: '$index',
+                              child: Container(
+                                height: phoneWidth / 3.3,
+                                width: phoneWidth / 3.3,
+                                margin: EdgeInsets.all(phoneWidth / 70),
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(10),
+                                    image: index < imagesRelated.length
+                                        ? DecorationImage(
+                                          fit: BoxFit.cover,
+                                            image: MemoryImage(
+                                              Uint8List.fromList(
+                                                imagesRelated[index].codeUnits,
+                                              ),
+                                            ),
+                                          )
+                                        : null,
+                                    color: Theme.of(context).colorScheme.secondary),
+                                child: index == imagesRelated.length
+                                    ? Icon(
+                                        Icons.add,
+                                        size: phoneWidth / 10,
+                                        color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8),
                                       )
                                     : null,
-                                color: Theme.of(context).colorScheme.secondary),
-                            child: index == imagesRelated.length
-                                ? Icon(
-                                    Icons.add,
-                                    size: phoneWidth / 10,
-                                    color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8),
-                                  )
-                                : null,
-                          ),
+                              ),
+                            ),
+                            index != imagesRelated.length
+                            ? Positioned(
+                              right: 0,
+                              top: 0,
+                              child: Transform.translate(
+                                offset: Offset(phoneWidth/60, 0),
+                                child: PopupMenuButton(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(10)
+                                  ),
+                                  onSelected: (value) {
+                                    if (value == 'delete') {
+                                      int targetedIndex = taskList.indexWhere((targetedTask) => targetedTask.id == task.id);
+                                      Task newTask = taskList[targetedIndex];
+                                      newTask.imagesRelated.removeAt(index);
+                                      taskList[targetedIndex] = newTask;
+                                      BlocProvider.of<TaskListCubit>(context).refreshTaskList();
+                                      BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
+                                      BlocProvider.of<HistoryCubit>(context).updateTask(newTask.name, newTask.id);
+                                      BlocProvider.of<EditTaskCubit>(context).initTask(newTask);
+                                    }
+                                  },
+                                  itemBuilder: (context) => [
+                                    const PopupMenuItem(
+                                      value: 'delete',
+                                      child: Row(
+                                        children: <Widget>[
+                                          Icon(Icons.delete),
+                                          Text('delete image')
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ) : const SizedBox.shrink()
+                          ],
                         ),
                       );
                     },
