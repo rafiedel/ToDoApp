@@ -267,6 +267,7 @@ class _SearchScreenState extends State<SearchScreen> {
         children: <Widget>[
           Expanded(
             child: TextField(
+              enabled: _refresh,
               controller: _searchController,
               onChanged: (searchKey) {
                 _searchController.text = searchKey;
@@ -277,7 +278,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
               decoration: InputDecoration(
                 border: InputBorder.none, 
-                hintText: 'Search', 
+                hintText: _refresh? 'Search' : 'searching through calendar . . .', 
                 hintStyle: TextStyle(color: Theme.of(context).colorScheme.inversePrimary), 
               ),
             ),

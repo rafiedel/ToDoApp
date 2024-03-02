@@ -25,7 +25,8 @@ class EditTaskCubit extends Cubit<EditTaskState> {
         isTopPriority: false,
         starts: DateTime.now(), 
         ends: DateTime.now().add(const Duration(days: 1)), 
-        category: ''
+        category: '',
+        imagesRelated: []
       ),
       hasChange: false
     )

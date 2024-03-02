@@ -19,7 +19,15 @@ class ViewSummaryTask extends StatelessWidget {
       appBar: AppBar(
         leading: GestureDetector(
           onTap: () => Navigator.pop(context),
-          child: Icon(Icons.arrow_back_ios, size: phoneWidth/25,),
+          child: Padding(
+            padding: EdgeInsets.only(left: phoneWidth / 100),
+            child: Center(
+              child: Text(
+                '«',
+                style: TextStyle(fontSize: phoneWidth / 15),
+              ),
+            ),
+          ),
         ),
         backgroundColor: Colors.transparent,
         title: Text('$tasksTitle TASKS', style: TextStyle(color: Theme.of(context).colorScheme.inversePrimary),),

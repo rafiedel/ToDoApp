@@ -24,7 +24,8 @@ class CreateTaskCubit extends Cubit<CreateTaskState>{
       isTopPriority: false,
       starts: DateTime.now(), 
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)), 
-      category: ''
+      category: '',
+      imagesRelated: []
       )
     )
   );
@@ -41,7 +42,8 @@ class CreateTaskCubit extends Cubit<CreateTaskState>{
         isTopPriority: false,
         starts: DateTime.now(), 
         ends: DateTime.now().add(const Duration(days: 1)), 
-        category: ''
+        category: '',
+        imagesRelated: []
         )
       )
     );
@@ -58,7 +60,8 @@ class CreateTaskCubit extends Cubit<CreateTaskState>{
         isTopPriority: state.newTask.isTopPriority,
         starts: newStartDate, 
         ends: newStartDate.add(const Duration(days: 1)), 
-        category: state.newTask.category
+        category: state.newTask.category,
+        imagesRelated: state.newTask.imagesRelated
       )
     ));
   }
@@ -73,7 +76,8 @@ class CreateTaskCubit extends Cubit<CreateTaskState>{
         isTopPriority: state.newTask.isTopPriority,
         starts: state.newTask.starts, 
         ends: newEndDate, 
-        category: state.newTask.category
+        category: state.newTask.category,
+        imagesRelated: state.newTask.imagesRelated
       )
     )
   );
@@ -88,7 +92,8 @@ class CreateTaskCubit extends Cubit<CreateTaskState>{
         isTopPriority: state.newTask.isTopPriority,
         starts: state.newTask.starts, 
         ends: state.newTask.ends, 
-        category: state.newTask.category
+        category: state.newTask.category,
+        imagesRelated: state.newTask.imagesRelated
       )
     )
   );
@@ -103,7 +108,8 @@ class CreateTaskCubit extends Cubit<CreateTaskState>{
         isTopPriority: state.newTask.isTopPriority,
         starts: state.newTask.starts, 
         ends: state.newTask.ends, 
-        category: state.newTask.category
+        category: state.newTask.category,
+        imagesRelated: state.newTask.imagesRelated
       )
     )
   );
@@ -119,7 +125,8 @@ class CreateTaskCubit extends Cubit<CreateTaskState>{
         isTopPriority: state.newTask.isTopPriority,
         starts: state.newTask.starts, 
         ends: state.newTask.ends, 
-        category: newCategory
+        category: newCategory,
+        imagesRelated: state.newTask.imagesRelated
       )
     )
   );
@@ -134,7 +141,8 @@ class CreateTaskCubit extends Cubit<CreateTaskState>{
         isTopPriority: newCondition,
         starts: state.newTask.starts, 
         ends: state.newTask.ends, 
-        category: state.newTask.category
+        category: state.newTask.category,
+        imagesRelated: state.newTask.imagesRelated
       )
     )
   );

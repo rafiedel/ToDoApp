@@ -1,4 +1,4 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
 import 'dart:async';
 import 'package:action_slider/action_slider.dart';
@@ -15,6 +15,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'dart:ui' as ui;
 import 'package:slide_countdown/slide_countdown.dart';
+import 'package:todoapp/screens/images_screen.dart';
 
 class DetailScren extends StatefulWidget {
   final Task task;
@@ -61,12 +62,40 @@ class _DetailScrenState extends State<DetailScren> {
                         .withOpacity(0.8)),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(10),
-                  child: Column(
+                  child: Stack(
                     children: [
-                      MyTextField(_nameController, "name"),
-                      TaskDetail(),
-                      SizedBox(
-                        height: phoneWidth / 20,
+                      Column(
+                        children: [
+                          MyTextField(_nameController, "name"),
+                          TaskDetail(),
+                          SizedBox(
+                            height: phoneWidth / 20,
+                          )
+                        ],
+                      ),
+                      Positioned(
+                        right: phoneWidth/50,
+                        bottom: phoneWidth/50,
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context, 
+                              MaterialPageRoute(builder: (BuildContext context) => ImagesRelatedScreen(whichTask: task,))
+                            );
+                          },
+                          child: Container(
+                            padding: EdgeInsets.all(phoneWidth/300),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              color: Theme.of(context).colorScheme.background
+                            ),
+                            child: Icon(
+                              Icons.image, 
+                              size: phoneWidth/18, 
+                              color: Theme.of(context).colorScheme.inversePrimary,
+                            )
+                          ),
+                        ),
                       )
                     ],
                   ),
@@ -146,13 +175,17 @@ class _DetailScrenState extends State<DetailScren> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: phoneWidth / 20),
-                    child: IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: const Icon(Icons.arrow_back_ios)),
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: Padding(
+                      padding: EdgeInsets.only(left: phoneWidth / 12.5),
+                      child: Center(
+                        child: Text(
+                          '«',
+                          style: TextStyle(fontSize: phoneWidth / 12),
+                        ),
+                      ),
+                    ),
                   ),
                   !task.isDone || task.category == 'Daily'
                       ? Row(
@@ -197,7 +230,8 @@ class _DetailScrenState extends State<DetailScren> {
                                             isTopPriority: task.isTopPriority,
                                             starts: task.starts,
                                             ends: task.ends,
-                                            category: task.category);
+                                            category: task.category,
+                                            imagesRelated: taskList[targetedIndex].imagesRelated);
                                         BlocProvider.of<EditTaskCubit>(context)
                                             .upForChange(
                                                 false, taskList[targetedIndex]);
@@ -566,7 +600,8 @@ class _DetailScrenState extends State<DetailScren> {
                                   isTopPriority: state.task.isTopPriority,
                                   starts: state.task.starts,
                                   ends: state.task.ends,
-                                  category: state.task.category);
+                                  category: state.task.category,
+                                  imagesRelated: state.task.imagesRelated);
                               BlocProvider.of<HistoryCubit>(context)
                                   .finishTask(state.task.name, task.id);
                               BlocProvider.of<TaskListCubit>(context).refreshTaskList();
@@ -576,7 +611,6 @@ class _DetailScrenState extends State<DetailScren> {
                               controller.success(); 
                               await Future.delayed(const Duration(milliseconds: 1500));
                               Navigator.pushAndRemoveUntil(
-                                  // ignore: use_build_context_synchronously
                                   context,
                                   MaterialPageRoute(
                                       builder: (BuildContext context) =>

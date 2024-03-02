@@ -19,6 +19,8 @@ class Task{
   DateTime ends;
   @HiveField(7)
   String category;
+  @HiveField(8)
+  List<String> imagesRelated;
 
   Task({
     required this.id,
@@ -28,7 +30,8 @@ class Task{
     required this.isTopPriority,
     required this.starts,
     required this.ends,
-    required this.category
+    required this.category,
+    required this.imagesRelated
   });
 }
 
@@ -92,6 +95,7 @@ void initialData() {
       starts: DateTime(2024, 2, 19),
       ends: DateTime(2024, 3, 2),
       category: 'OPREC',
+      imagesRelated: []
     ),
     Task(
       id: 2,
@@ -102,6 +106,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 2)),
       category: 'Project',
+      imagesRelated: []
     ),
     Task(
       id: 3,
@@ -112,6 +117,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 3)),
       category: 'Career',
+      imagesRelated: []
     ),
     Task(
       id: 4,
@@ -122,6 +128,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 4)),
       category: 'Education',
+      imagesRelated: []
     ),
     Task(
       id: 5,
@@ -132,6 +139,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 5)),
       category: 'Health',
+      imagesRelated: []
     ),
     Task(
       id: 6,
@@ -142,6 +150,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 6)),
       category: 'Personal',
+      imagesRelated: []
     ),
     Task(
       id: 7,
@@ -152,6 +161,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 7)),
       category: 'Writing',
+      imagesRelated: []
     ),
     Task(
       id: 8,
@@ -162,6 +172,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 8)),
       category: 'Work',
+      imagesRelated: []
     ),
     Task(
       id: 9,
@@ -172,6 +183,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 9)),
       category: 'Hobby',
+      imagesRelated: []
     ),
     Task(
       id: 10,
@@ -182,6 +194,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 10)),
       category: 'Reading',
+      imagesRelated: []
     ),
     Task(
       id: 11,
@@ -192,6 +205,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 11)),
       category: 'Food',
+      imagesRelated: []
     ),
     Task(
       id: 12,
@@ -202,6 +216,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 12)),
       category: 'Entertainment',
+      imagesRelated: []
     ),
     Task(
       id: 13,
@@ -212,6 +227,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 6)),
       category: 'Project',
+      imagesRelated: []
     ),
     Task(
       id: 14,
@@ -222,6 +238,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 7)),
       category: 'Career',
+      imagesRelated: []
     ),
     Task(
       id: 15,
@@ -232,6 +249,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 4)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 8)),
       category: 'Education',
+      imagesRelated: []
     ),
     Task(
       id: 16,
@@ -242,6 +260,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 4)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 9)),
       category: 'Health',
+      imagesRelated: []
     ),
     Task(
       id: 17,
@@ -252,6 +271,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 5)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 10)),
       category: 'Food',
+      imagesRelated: []
     ),
     Task(
       id: 18,
@@ -262,6 +282,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       category: 'Daily',
+      imagesRelated: []
     ),
     Task(
       id: 19,
@@ -272,6 +293,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       category: 'Health',
+      imagesRelated: []
     ),
     Task(
       id: 20,
@@ -282,6 +304,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       category: 'Writing',
+      imagesRelated: []
     ),
     Task(
       id: 21,
@@ -292,6 +315,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 2)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 3)),
       category: 'Career',
+      imagesRelated: []
     ),
     Task(
       id: 22,
@@ -302,6 +326,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 2)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 3)),
       category: 'Hobby',
+      imagesRelated: []
     ),
     Task(
       id: 23,
@@ -312,6 +337,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       category: 'Daily',
+      imagesRelated: []
     ),
     Task(
       id: 24,
@@ -322,6 +348,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       category: 'Daily',
+      imagesRelated: []
     ),
     Task(
       id: 25,
@@ -332,6 +359,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       category: 'Entertainment',
+      imagesRelated: []
     ),
     Task(
       id: 26,
@@ -342,6 +370,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 2)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 2)),
       category: 'Health',
+      imagesRelated: []
     ),
     Task(
       id: 27,
@@ -352,6 +381,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 2)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 2)),
       category: 'Health',
+      imagesRelated: []
     ),
     Task(
       id: 28,
@@ -362,6 +392,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       category: 'Daily',
+      imagesRelated: []
     ),
     Task(
       id: 29,
@@ -372,6 +403,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 3)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 3)),
       category: 'Writing',
+      imagesRelated: []
     ),
     Task(
       id: 30,
@@ -382,6 +414,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 3)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 3)),
       category: 'Entertainment',
+      imagesRelated: []
     ),
     Task(
       id: 31,
@@ -392,6 +425,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 3)),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 3)),
       category: 'Entertainment',
+      imagesRelated: []
     ),
     Task(
       id: 32,
@@ -402,6 +436,7 @@ void initialData() {
       starts: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
       ends: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)),
       category: 'Daily',
+      imagesRelated: []
     ),
     Task(
       id: 33,
@@ -412,6 +447,7 @@ void initialData() {
       starts: DateTime(2024, 1, 1),
       ends: DateTime(2024, 1, 2),
       category: 'Education',
+      imagesRelated: []
     ),
     Task(
       id: 34,
@@ -422,6 +458,7 @@ void initialData() {
       starts: DateTime(2024, 1, 1),
       ends: DateTime(2024, 1, 2),
       category: 'Food',
+      imagesRelated: []
     ),
     Task(
       id: 35,
@@ -432,6 +469,7 @@ void initialData() {
       starts: DateTime(2024, 1, 1),
       ends: DateTime(2024, 1, 2),
       category: 'Health',
+      imagesRelated: []
     ),
     Task(
       id: 36,
@@ -442,6 +480,7 @@ void initialData() {
       starts: DateTime(2024, 1, 1),
       ends: DateTime(2024, 1, 2),
       category: 'Hobby',
+      imagesRelated: []
     ),
     Task(
       id: 37,
@@ -452,6 +491,7 @@ void initialData() {
       starts: DateTime(2024, 1, 1),
       ends: DateTime(2024, 1, 2),
       category: 'Reading',
+      imagesRelated: []
     ),
     Task(
       id: 38,
@@ -462,6 +502,7 @@ void initialData() {
       starts: DateTime(2024, 1, 1),
       ends: DateTime(2024, 1, 2),
       category: 'Personal',
+      imagesRelated: []
     ),
     Task(
       id: 39,
@@ -472,6 +513,7 @@ void initialData() {
       starts: DateTime(2024, 1, 1),
       ends: DateTime(2024, 1, 2),
       category: 'Hobby',
+      imagesRelated: []
     ),
 
   ];
@@ -500,7 +542,8 @@ void loadData() {
             isTopPriority: task.isTopPriority, 
             starts: task.starts, 
             ends: task.ends, 
-            category: task.category 
+            category: task.category ,
+            imagesRelated: task.imagesRelated
             );
           }
           return task;

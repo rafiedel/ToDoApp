@@ -30,10 +30,17 @@ class ViewAllOngoingScreen extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        IconButton(
-          padding: EdgeInsets.only(left: phoneWidth/20),
-          onPressed: () => Navigator.pop(context),
-          icon: Icon(Icons.arrow_back_ios, size: phoneWidth / 20),
+        GestureDetector(
+          onTap: () => Navigator.pop(context),
+          child: Padding(
+            padding: EdgeInsets.only(left: phoneWidth / 20),
+            child: Center(
+              child: Text(
+                '«',
+                style: TextStyle(fontSize: phoneWidth / 15),
+              ),
+            ),
+          ),
         ),
         Row(
           children: [

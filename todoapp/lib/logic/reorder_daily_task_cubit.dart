@@ -41,20 +41,21 @@ class ReOrderDailyTaskCubit extends Cubit<ReOrderDailyTasksState> {
           isTopPriority: oldTask.isTopPriority, 
           starts: oldTask.starts, 
           ends: oldTask.ends, 
-          category: oldTask.category
+          category: oldTask.category,
+          imagesRelated: oldTask.imagesRelated
         );
       int targetedIndex = taskList.indexWhere((task) => task == oldTask);
       taskList[targetedIndex] = editedDailyTask;
     }
     taskList.sort((a,b) => a.id.compareTo(b.id));
     List<Task> updatedDailyTasksList = taskList.where((task) => task.category == 'Daily').toList();
-    List<int> updatedDailyTasksIDs = dailyTasksList.map((task) => task.id).toList();
+    List<int> updatedDailyTasksIDs = updatedDailyTasksList.map((task) => task.id).toList();
     emit(ReOrderDailyTasksState(dailyTasksList: updatedDailyTasksList, dailyTasksIDs: updatedDailyTasksIDs));
   }
 
   void refreshDailyTaskOrder() {
     List<Task> lastDailyTasksList = taskList.where((task) => task.category == 'Daily').toList();
-    List<int> lastDailyTasksIDs = dailyTasksList.map((task) => task.id).toList();
+    List<int> lastDailyTasksIDs = lastDailyTasksList.map((task) => task.id).toList();
     emit(ReOrderDailyTasksState(dailyTasksList: lastDailyTasksList, dailyTasksIDs: lastDailyTasksIDs));
   }
 

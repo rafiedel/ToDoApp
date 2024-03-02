@@ -31,11 +31,12 @@ class TaskListCubit extends Cubit<TaskListState>{
         isTopPriority: false, 
         starts: DateTime.now(), 
         ends: DateTime.now().add(const Duration(days: 1)), 
-        category: newCategory
+        category: newCategory,
+        imagesRelated: []
       )
     );
     emit(TaskListState(taskList: state.taskList));
     saveData();
   }
-
+  
 }

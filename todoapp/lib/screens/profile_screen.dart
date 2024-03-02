@@ -24,10 +24,55 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
+  Future<void> whichImageSource(String whichImage) async {
+    double phoneWidth = MediaQuery.of(context).size.width;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        behavior: SnackBarBehavior.fixed,
+        content: Column(
+          children: [
+            MaterialButton(
+              color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+              onPressed: () {
+                pickImage(whichImage, ImageSource.camera);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.camera, size: phoneWidth/17.5),
+                  SizedBox(width: phoneWidth/20),
+                  Text('C A M E R A', style: TextStyle(fontSize: phoneWidth/25),)
+                ],
+              ),
+            ),
+            SizedBox(height: phoneWidth/50,),
+            MaterialButton(
+              color: Theme.of(context).colorScheme.tertiary,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+              onPressed: () {
+                pickImage(whichImage, ImageSource.gallery);
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Icon(Icons.image, size: phoneWidth/17.5),
+                  SizedBox(width: phoneWidth/20),
+                  Text('G A L L E R Y', style: TextStyle(fontSize: phoneWidth/25),)
+                ],
+              ),
+            ),
+            SizedBox(height: phoneWidth/100,)
+          ],
+        ),
+      )
+    );
+  }
 
-  Future<void> pickImageFromGallery(whichImage) async {
+  Future<void> pickImage(String whichImage, ImageSource whichImageSource) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    final pickedFile = await picker.pickImage(source: whichImageSource);
     if (pickedFile != null) {
       File? imgFile = File(pickedFile.path);
       File? imgCropped = await cropImage(imageFile: imgFile);
@@ -338,7 +383,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         return GestureDetector(
-          onTap: () => pickImageFromGallery('bg'),
+          onTap: () => whichImageSource('bg'),
           child: ListTile(
             leading: Icon(Icons.add_photo_alternate_outlined, size: phoneWidth/20,),
             title: Text('Display Home App Bar BackGround', style: TextStyle(fontSize: phoneWidth/35),),
@@ -355,7 +400,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return BlocBuilder<UserCubit, UserState>(
       builder: (context, state) {
         return GestureDetector(
-          onTap: () => pickImageFromGallery('pp'),
+          onTap: () => whichImageSource('pp'),
           child: ListTile(
             leading: Icon(Icons.emoji_emotions, size: phoneWidth/20,),
             title: Text('Display Profile Picture', style: TextStyle(fontSize: phoneWidth/35),),
@@ -466,7 +511,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           child: ListTile(
             leading: Icon(Icons.task_alt, size: phoneWidth/20,),
             title: Text('Manage Daily Task', style: TextStyle(fontSize: phoneWidth/35),),
-            trailing: Text(state.dailyTasksList.length.toString()),  
+            trailing: Text(state.dailyTasksList.length.toString(), style: TextStyle(fontSize: phoneWidth/30),),  
          )
         );
       },

@@ -88,7 +88,7 @@ class TaskCustomizeTile extends StatelessWidget {
                           child: Text(
                             task.description.isNotEmpty
                                 ? task.description
-                                : " . . . . . .",
+                                : "⠂⠄⠄⠂⠁⠁⠂⠄  n o t h i n g  ⠂⠄⠄⠂ ⠂⠄  h e r e⠄⠄⠂⠁⠁⠂⠄⠄⠂",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
