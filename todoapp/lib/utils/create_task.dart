@@ -463,8 +463,8 @@ class _CreateTaskButton extends State<CreateTaskButton> {
               onPressed: () {
                 if (newTaskState.newTask.name.isNotEmpty) {
                   if (newTaskState.newTask.category.contains('Daily')) {
-                    BlocProvider.of<CreateTaskCubit>(context).setStarts(DateTime.now());
-                    BlocProvider.of<CreateTaskCubit>(context).setEnds(DateTime.now().add(const Duration(days: 1)));
+                    newTaskState.newTask.starts = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+                    newTaskState.newTask.ends = newTaskState.newTask.starts.add(const Duration(days: 1));
                     taskList.add(newTaskState.newTask);
                   }
                   else {

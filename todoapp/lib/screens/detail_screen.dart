@@ -470,7 +470,9 @@ class _DetailScrenState extends State<DetailScren> {
     double phoneWidth = MediaQuery.of(context).size.width;
     return BlocBuilder<EditTaskCubit, EditTaskState>(
       builder: (context, state) {
-        if (DateTime.now().isBefore(state.task.starts) && state.task.isDone == false) {
+        if (state.task.isDone == true){
+          waitingFor = 'ENDED';
+        } else if(DateTime.now().isBefore(state.task.starts) && state.task.isDone == false) {
           timesLeft = state.task.starts.difference(DateTime.now()).inMinutes;
           waitingFor = 'STARTS';
         } else if (DateTime.now().isAfter(state.task.starts) && DateTime.now().isBefore(state.task.ends) && state.task.isDone == false)  {
@@ -479,8 +481,6 @@ class _DetailScrenState extends State<DetailScren> {
         } else if (DateTime.now().isAfter(state.task.ends)){
           timesLeft = DateTime.now().difference(state.task.ends).inMinutes;
           waitingFor = 'LATE';
-        }else if (state.task.isDone == true){
-          waitingFor = 'ENDED';
         }
         return Column(
           children: <Widget>[

@@ -98,54 +98,56 @@ class ImagesRelatedScreen extends StatelessWidget {
                     (index) {
                       return GestureDetector(
                         onTap: () {
-                          if (index == imagesRelated.length) {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                backgroundColor: Theme.of(context).colorScheme.secondary,
-                                behavior: SnackBarBehavior.fixed,
-                                content: Column(
-                                  children: [
-                                    MaterialButton(
-                                      color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                      onPressed: () {
-                                        pickImage(task, context, ImageSource.camera);
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(Icons.camera, size: phoneWidth/17.5),
-                                          SizedBox(width: phoneWidth/20),
-                                          Text('C A M E R A', style: TextStyle(fontSize: phoneWidth/25),)
-                                        ],
+                          if (!task.isDone) {
+                            if (index == imagesRelated.length) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                                  behavior: SnackBarBehavior.fixed,
+                                  content: Column(
+                                    children: [
+                                      MaterialButton(
+                                        color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                        onPressed: () {
+                                          pickImage(task, context, ImageSource.camera);
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Icon(Icons.camera, size: phoneWidth/17.5),
+                                            SizedBox(width: phoneWidth/20),
+                                            Text('C A M E R A', style: TextStyle(fontSize: phoneWidth/25),)
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: phoneWidth/50,),
-                                    MaterialButton(
-                                      color: Theme.of(context).colorScheme.tertiary,
-                                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
-                                      onPressed: () {
-                                        pickImage(task, context, ImageSource.gallery);
-                                      },
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        children: <Widget>[
-                                          Icon(Icons.image, size: phoneWidth/17.5),
-                                          SizedBox(width: phoneWidth/20),
-                                          Text('G A L L E R Y', style: TextStyle(fontSize: phoneWidth/25),)
-                                        ],
+                                      SizedBox(height: phoneWidth/50,),
+                                      MaterialButton(
+                                        color: Theme.of(context).colorScheme.tertiary,
+                                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+                                        onPressed: () {
+                                          pickImage(task, context, ImageSource.gallery);
+                                        },
+                                        child: Row(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Icon(Icons.image, size: phoneWidth/17.5),
+                                            SizedBox(width: phoneWidth/20),
+                                            Text('G A L L E R Y', style: TextStyle(fontSize: phoneWidth/25),)
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                    SizedBox(height: phoneWidth/100,)
-                                  ],
-                                ),
-                              )
-                            );
-                          } else {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (BuildContext context) => ViewImages(initialIndex: index, imagesString: imagesRelated,))
-                            );
+                                      SizedBox(height: phoneWidth/100,)
+                                    ],
+                                  ),
+                                )
+                              );
+                            } else {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (BuildContext context) => ViewImages(initialIndex: index, imagesString: imagesRelated,))
+                              );
+                            }
                           }
                         },
                         child: Stack(
@@ -170,11 +172,13 @@ class ImagesRelatedScreen extends StatelessWidget {
                                         : null,
                                     color: Theme.of(context).colorScheme.secondary),
                                 child: index == imagesRelated.length
-                                    ? Icon(
-                                        Icons.add,
-                                        size: phoneWidth / 10,
-                                        color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8),
-                                      )
+                                    ? task.isDone
+                                      ? const Expanded(child: Center(child: Text('FINISHED TASK', maxLines: null,)))
+                                      : Icon(
+                                          Icons.add,
+                                          size: phoneWidth / 10,
+                                          color: Theme.of(context).colorScheme.inversePrimary.withOpacity(0.8),
+                                        )
                                     : null,
                               ),
                             ),
