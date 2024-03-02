@@ -10,9 +10,9 @@
   - Name
   - Description
   - Images
-  - Category #except daily tasks
-  - Prioritize Task #except daily tasks
-  - Starts - Ends (year, month, day) #except daily tasks
+  - Category *(except for daily tasks)*
+  - Prioritize Task *(except for daily tasks)*
+  - Starts - Ends (year, month, day) *(except for daily tasks)*
 
 - **Search Functionality:**
   - Search tasks by date, name, and category.
@@ -33,7 +33,7 @@
   - History of user activity.
 
 - **Specifications:**
-  - Local databae
+  - Local database
   - No internet needed
 
 
