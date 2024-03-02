@@ -540,8 +540,8 @@ void loadData() {
             description: task.description, 
             isDone: false, 
             isTopPriority: task.isTopPriority, 
-            starts: task.starts, 
-            ends: task.ends, 
+            starts: DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day), 
+            ends: DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day).add(Duration(days: 1)), 
             category: task.category ,
             imagesRelated: task.imagesRelated
             );
