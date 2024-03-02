@@ -6,6 +6,14 @@
   - Create, edit, delete, and mark tasks as finished.
   - Daily Task Option
 
+- **Task Attribute**
+  - Name
+  - Description
+  - Images
+  - Category #except daily tasks
+  - Prioritize Task #except daily tasks
+  - Starts - Ends (year, month, day) #except daily tasks
+
 - **Search Functionality:**
   - Search tasks by date, name, and category.
 
