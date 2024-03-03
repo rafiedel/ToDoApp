@@ -40,6 +40,13 @@ class _DetailScrenState extends State<DetailScren> {
     BlocProvider.of<EditTaskCubit>(context).initTask(task);
     super.initState();
   }
+  
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,57 +57,7 @@ class _DetailScrenState extends State<DetailScren> {
           Stack(
             children: [
               ColoredAppBar(),
-              Container(
-                height: phoneWidth / 2,
-                margin: EdgeInsets.fromLTRB(
-                    phoneWidth / 15, phoneWidth / 3.75, phoneWidth / 15, 0),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Theme.of(context)
-                        .colorScheme
-                        .inversePrimary
-                        .withOpacity(0.8)),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(10),
-                  child: Stack(
-                    children: [
-                      Column(
-                        children: [
-                          MyTextField(_nameController, "name"),
-                          TaskDetail(),
-                          SizedBox(
-                            height: phoneWidth / 20,
-                          )
-                        ],
-                      ),
-                      Positioned(
-                        right: phoneWidth/50,
-                        bottom: phoneWidth/50,
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context, 
-                              MaterialPageRoute(builder: (BuildContext context) => ImagesRelatedScreen(whichTask: task,))
-                            );
-                          },
-                          child: Container(
-                            padding: EdgeInsets.all(phoneWidth/300),
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(5),
-                              color: Theme.of(context).colorScheme.background
-                            ),
-                            child: Icon(
-                              Icons.image, 
-                              size: phoneWidth/18, 
-                              color: Theme.of(context).colorScheme.inversePrimary,
-                            )
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ),
-              ),
+              TaskInformation(phoneWidth)
             ],
           ),
           SizedBox(
@@ -182,7 +139,7 @@ class _DetailScrenState extends State<DetailScren> {
                       child: Center(
                         child: Text(
                           '«',
-                          style: TextStyle(fontSize: phoneWidth / 12),
+                          style: TextStyle(fontSize: phoneWidth / 15),
                         ),
                       ),
                     ),
@@ -199,7 +156,7 @@ class _DetailScrenState extends State<DetailScren> {
                                       Scaffold.of(context).openEndDrawer(),
                                   child: Icon(
                                     Icons.density_medium_outlined,
-                                    size: phoneWidth / 20,
+                                    size: phoneWidth / 22.5,
                                   ),
                                 ),
                               ),
@@ -208,98 +165,68 @@ class _DetailScrenState extends State<DetailScren> {
                               padding: EdgeInsets.only(right: phoneWidth / 20),
                               child: Visibility(
                                 visible: state.hasChange,
-                                child: MaterialButton(
-                                    padding: const EdgeInsets.all(0),
-                                    color: Colors.green.withOpacity(0.75),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    onPressed: () {
-                                      if (_nameController.text.isNotEmpty) {
-                                        int targetedIndex = taskList.indexWhere(
-                                            (checkTask) =>
-                                                checkTask.id == task.id);
-                                        BlocProvider.of<HistoryCubit>(context)
-                                            .updateTask(task.name, task.id);
-                                        taskList[targetedIndex] = Task(
-                                            id: task.id,
-                                            name: _nameController.text,
-                                            description:
-                                                _descriptionController.text,
-                                            isDone: task.isDone,
-                                            isTopPriority: task.isTopPriority,
-                                            starts: task.starts,
-                                            ends: task.ends,
-                                            category: task.category,
-                                            imagesRelated: taskList[targetedIndex].imagesRelated);
-                                        BlocProvider.of<EditTaskCubit>(context)
-                                            .upForChange(
-                                                false, taskList[targetedIndex]);
-                                        BlocProvider.of<TaskListCubit>(context)
-                                            .refreshTaskList();
-                                        BlocProvider.of<SearchTaskCubit>(
-                                                context)
-                                            .refreshTaskList();
-                                        BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
-                                      } else {
-                                        showDialog(
-                                          context: context,
-                                          barrierDismissible: false,
-                                          builder: (context) {
-                                            Future.delayed(
-                                                const Duration(milliseconds: 1000),
-                                                () {
-                                              Navigator.of(context).pop(
-                                                  true); 
-                                            });
-                                            return AlertDialog(
-                                              contentPadding: const EdgeInsets.all(0),
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(10),
-                                              ),
-                                              icon: Icon(
-                                                Icons.warning,
-                                                color: Colors.yellow,
-                                                size: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    7.5,
-                                              ),
-                                              title: Text(
-                                                'NAME MUST BE FILL !',
-                                                maxLines: null,
-                                                style: TextStyle(
-                                                    fontSize:
-                                                        MediaQuery.of(context)
-                                                                .size
-                                                                .width /
-                                                            25),
-                                              ),
-                                            );
-                                          },
-                                        );
+                                child: GestureDetector(
+                                  onTap: () {
+                                    if (_nameController.text.isNotEmpty) {
+                                      int targetedIndex = taskList.indexWhere(
+                                          (checkTask) =>
+                                              checkTask.id == task.id);
+                                      BlocProvider.of<HistoryCubit>(context)
+                                          .updateTask(task.name, task.id);
+                                      if (state.task.category == 'Daily') {
+                                        state.task.starts = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+                                        state.task.ends = state.task.starts.add(const Duration(days: 1));
                                       }
-                                    },
-                                    child: Row(
-                                      children: <Widget>[
-                                        Text(
-                                          'SAVE',
-                                          style: TextStyle(
-                                            fontSize: phoneWidth / 40,
-                                            fontWeight: FontWeight.w900,
-                                            letterSpacing: phoneWidth / 100,
+                                      taskList[targetedIndex] = Task(
+                                          id: task.id,
+                                          name: _nameController.text,
+                                          description:
+                                              _descriptionController.text,
+                                          isDone: state.task.isDone,
+                                          isTopPriority: state.task.isTopPriority,
+                                          starts: state.task.starts,
+                                          ends: state.task.ends,
+                                          category: state.task.category,
+                                          imagesRelated: state.task.imagesRelated);
+                                      BlocProvider.of<EditTaskCubit>(context)
+                                          .upForChange(
+                                              false, taskList[targetedIndex]);
+                                      BlocProvider.of<TaskListCubit>(context)
+                                          .refreshTaskList();
+                                      BlocProvider.of<SearchTaskCubit>(
+                                              context)
+                                          .refreshTaskList();
+                                      BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
+                                    } else {
+                                      alertToUser('NAME MUST BE FILL !');
+                                    }
+                                  },
+                                  child: Container(
+                                      padding: EdgeInsets.symmetric(horizontal: phoneWidth/30, vertical: phoneWidth/50),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.green.withOpacity(0.75),
+                                      ),
+                                      child: Row(
+                                        children: <Widget>[
+                                          Text(
+                                            'SAVE',
+                                            style: TextStyle(
+                                              fontSize: phoneWidth / 40,
+                                              fontWeight: FontWeight.w900,
+                                              letterSpacing: phoneWidth / 100,
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: phoneWidth / 100,
-                                        ),
-                                        Icon(
-                                          Icons.save,
-                                          size: phoneWidth / 30,
-                                        ),
-                                      ],
-                                    )),
+                                          SizedBox(
+                                            width: phoneWidth / 100,
+                                          ),
+                                          Icon(
+                                            Icons.save,
+                                            size: phoneWidth / 30,
+                                          ),
+                                        ],
+                                      )),
+                                ),
                               ),
                             ),
                           ],
@@ -311,6 +238,60 @@ class _DetailScrenState extends State<DetailScren> {
           ),
         );
       },
+    );
+  }
+
+  Widget TaskInformation(double phoneWidth) {
+    return Container(
+      height: phoneWidth / 2,
+      margin: EdgeInsets.fromLTRB(
+          phoneWidth / 15, phoneWidth / 3.75, phoneWidth / 15, 0),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Theme.of(context)
+              .colorScheme
+              .inversePrimary
+              .withOpacity(0.8)),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(10),
+        child: Stack(
+          children: [
+            Column(
+              children: [
+                MyTextField(_nameController, "name"),
+                CategoryStartsEnds(),
+                SizedBox(
+                  height: phoneWidth / 20,
+                )
+              ],
+            ),
+            Positioned(
+              right: phoneWidth/50,
+              bottom: phoneWidth/50,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (BuildContext context) => ImagesRelatedScreen(whichTask: task,))
+                  );
+                },
+                child: Container(
+                  padding: EdgeInsets.all(phoneWidth/300),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Theme.of(context).colorScheme.background
+                  ),
+                  child: Icon(
+                    Icons.image, 
+                    size: phoneWidth/18, 
+                    color: Theme.of(context).colorScheme.inversePrimary,
+                  )
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 
@@ -367,7 +348,7 @@ class _DetailScrenState extends State<DetailScren> {
     );
   }
 
-  Widget TaskDetail() {
+  Widget CategoryStartsEnds() {
     double phoneWidth = MediaQuery.of(context).size.width;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: phoneWidth / 40),
@@ -428,21 +409,25 @@ class _DetailScrenState extends State<DetailScren> {
                       child: GestureDetector(
                         onTap: () {
                           if (value == task.category) {
-                            ChooseCategory(phoneWidth);
+                            chooseCategory(phoneWidth);
                           } else if (value ==
                               DateFormat('MMMM, EEEE dd yyy')
-                                  .format(task.starts)) {
+                                  .format(task.starts) && state.task.category != 'Daily') {
                             ShowDatePicker(context, task.starts, 'starts',
                                 task.starts, state);
                           } else if (value ==
                               DateFormat('MMMM, EEEE dd yyy')
-                                  .format(task.ends)) {
+                                  .format(task.ends) && state.task.category != 'Daily') {
                             ShowDatePicker(
                                 context, task.ends, 'ends', task.starts, state);
+                          } else {
+                            alertToUser("Daily task's time are set to default");
                           }
                         },
                         child: Text(
-                          value,
+                          state.task.category == 'Daily'
+                            ? (value == 'Daily'? value : '~ ~  D E F A U L T  ~ ~')
+                            : (value == ''? '~~~' : value),
                           style: TextStyle(
                             decoration: task.isDone? TextDecoration.lineThrough : TextDecoration.none,
                             decorationColor: Theme.of(context).colorScheme.inversePrimary,
@@ -629,7 +614,7 @@ class _DetailScrenState extends State<DetailScren> {
     );
   }
 
-  void ChooseCategory(double phoneWidth) {
+  void chooseCategory(double phoneWidth) {
     if (!task.isDone) {
       showDialog(
         context: context,
@@ -641,6 +626,7 @@ class _DetailScrenState extends State<DetailScren> {
                     .toList()
                     .toSet()
                     .toList();
+            allCategory.remove('Daily'); allCategory.insert(0, 'Daily');
             return AlertDialog(
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10)),
@@ -663,6 +649,7 @@ class _DetailScrenState extends State<DetailScren> {
                       onChanged: (value) {
                         setState(() {
                           task.category = value;
+                          editTaskState.task.category = value;
                           BlocProvider.of<EditTaskCubit>(context)
                               .upForChange(true, editTaskState.task);
                         });
@@ -695,8 +682,49 @@ class _DetailScrenState extends State<DetailScren> {
             task.ends = result.add(const Duration(days: 1));
           }
         });
-        BlocProvider.of<EditTaskCubit>(context).upForChange(true, task);
+        BlocProvider.of<EditTaskCubit>(context).upForChange(true, originalTask.task);
       });
     }
   }
+
+  void alertToUser(String message) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        Future.delayed(
+            const Duration(milliseconds: 1000),
+            () {
+          Navigator.of(context).pop(
+              true); 
+        });
+        return AlertDialog(
+          contentPadding: const EdgeInsets.all(0),
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(10),
+          ),
+          icon: Icon(
+            Icons.warning,
+            color: Colors.yellow,
+            size: MediaQuery.of(context)
+                    .size
+                    .width /
+                7.5,
+          ),
+          title: Text(
+            message,
+            maxLines: null,
+            style: TextStyle(
+                fontSize:
+                    MediaQuery.of(context)
+                            .size
+                            .width /
+                        25),
+          ),
+        );
+      },
+    );
+  }
+
 }

@@ -541,7 +541,7 @@ void loadData() {
             isDone: false, 
             isTopPriority: task.isTopPriority, 
             starts: DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day), 
-            ends: DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day).add(Duration(days: 1)), 
+            ends: DateTime(DateTime.now().year,DateTime.now().month, DateTime.now().day).add(const Duration(days: 1)), 
             category: task.category ,
             imagesRelated: task.imagesRelated
             );
