@@ -6,6 +6,14 @@
   - Create, edit, delete, and mark tasks as finished.
   - Daily Task Option
 
+- **Task Attribute**
+  - Name
+  - Description
+  - Images
+  - Category *(except for daily tasks)*
+  - Prioritize Task *(except for daily tasks)*
+  - Starts - Ends (year, month, day) *(except for daily tasks)*
+
 - **Search Functionality:**
   - Search tasks by date, name, and category.
 
@@ -25,7 +33,7 @@
   - History of user activity.
 
 - **Specifications:**
-  - Local databae
+  - Local database
   - No internet needed
 
 
