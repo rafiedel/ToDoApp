@@ -10,9 +10,9 @@
   - Name
   - Description
   - Images
-  - Category *(except for daily tasks)*
-  - Prioritize Task *(except for daily tasks)*
-  - Starts - Ends (year, month, day) *(except for daily tasks)*
+  - Category
+  - Prioritize Task
+  - Starts - Ends (year, month, day)
 
 - **Search Functionality:**
   - Search tasks by date, name, and category.
