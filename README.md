@@ -29,6 +29,7 @@
   - Profile picture.
   - Display name.
   - Brightness theme.
+  - Manage Daily Task
   - Summary of tasks.
   - History of user activity.
 
