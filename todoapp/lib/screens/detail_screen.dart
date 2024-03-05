@@ -25,19 +25,52 @@ class DetailScren extends StatefulWidget {
   State<DetailScren> createState() => _DetailScrenState();
 }
 
+class DateTimeController {
+  DateTime? time;
+
+  void dispose() {
+    time = null;
+  }
+
+  void setTime({required DateTime newDateTime}) {
+    time = newDateTime;
+  }
+
+  DateTimeController({
+    this.time
+  });
+}
+
+
+class CategoryController {
+  String? text;
+
+  void dispose() {
+    text = null;
+  }
+
+  CategoryController({
+    this.text
+  });
+}
+
 class _DetailScrenState extends State<DetailScren> {
   late final TextEditingController  _nameController = TextEditingController();
   late final TextEditingController _descriptionController = TextEditingController();
-  late Task task;
+  late final CategoryController _categoryController = CategoryController();
+  late final DateTimeController _startsController = DateTimeController();
+  late final DateTimeController _endsController = DateTimeController();
   late int timesLeft;
   late String waitingFor;
 
   @override
   void initState() {
-    task = widget.task;
-    _nameController.text = task.name;
-    _descriptionController.text = task.description;
-    BlocProvider.of<EditTaskCubit>(context).initTask(task);
+    _nameController.text = widget.task.name;
+    _descriptionController.text = widget.task.description;
+    _categoryController.text = widget.task.category;
+    _startsController.time = widget.task.starts;
+    _endsController.time = widget.task.ends;
+    BlocProvider.of<EditTaskCubit>(context).initTask(widget.task);
     super.initState();
   }
   
@@ -45,7 +78,23 @@ class _DetailScrenState extends State<DetailScren> {
   void dispose() {
     _nameController.dispose();
     _descriptionController.dispose();
+    _categoryController.dispose();
+    _startsController.dispose();
+    _endsController.dispose();
     super.dispose();
+  }
+
+  void checkIfAnythingChanges(Task originalTask) {
+    if (originalTask.name != _nameController.text ||
+        originalTask.description != _descriptionController.text ||
+        originalTask.category != _categoryController.text ||
+        originalTask.starts != _startsController.time ||
+        originalTask.ends != _endsController.time){
+          BlocProvider.of<EditTaskCubit>(context).upForChange(true, originalTask);
+        }
+    else {
+      BlocProvider.of<EditTaskCubit>(context).upForChange(false, originalTask);
+    }
   }
 
   @override
@@ -144,7 +193,7 @@ class _DetailScrenState extends State<DetailScren> {
                       ),
                     ),
                   ),
-                  !task.isDone || task.category == 'Daily'
+                  !widget.task.isDone || widget.task.category == 'Daily'
                       ? Row(
                           children: [
                             Padding(
@@ -170,23 +219,23 @@ class _DetailScrenState extends State<DetailScren> {
                                     if (_nameController.text.isNotEmpty) {
                                       int targetedIndex = taskList.indexWhere(
                                           (checkTask) =>
-                                              checkTask.id == task.id);
+                                              checkTask.id == widget.task.id);
                                       BlocProvider.of<HistoryCubit>(context)
-                                          .updateTask(task.name, task.id);
-                                      if (state.task.category == 'Daily') {
-                                        state.task.starts = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-                                        state.task.ends = state.task.starts.add(const Duration(days: 1));
+                                          .updateTask(widget.task.name, widget.task.id);
+                                      if (_categoryController.text == 'Daily') {
+                                        _startsController.time = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+                                        _endsController.time = _startsController.time!.add(const Duration(days: 1));
                                       }
                                       taskList[targetedIndex] = Task(
-                                          id: task.id,
+                                          id: widget.task.id,
                                           name: _nameController.text,
                                           description:
                                               _descriptionController.text,
                                           isDone: state.task.isDone,
                                           isTopPriority: state.task.isTopPriority,
-                                          starts: state.task.starts,
-                                          ends: state.task.ends,
-                                          category: state.task.category,
+                                          starts: _startsController.time!,
+                                          ends: _endsController.time!,
+                                          category: _categoryController.text!,
                                           imagesRelated: state.task.imagesRelated);
                                       BlocProvider.of<EditTaskCubit>(context)
                                           .upForChange(
@@ -268,25 +317,29 @@ class _DetailScrenState extends State<DetailScren> {
             Positioned(
               right: phoneWidth/50,
               bottom: phoneWidth/50,
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(builder: (BuildContext context) => ImagesRelatedScreen(whichTask: task,))
+              child: BlocBuilder<EditTaskCubit, EditTaskState>(
+                builder: (context,state) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (BuildContext context) => ImagesRelatedScreen(currentEditTaskState: state,))
+                      );
+                    },
+                    child: Container(
+                      padding: EdgeInsets.all(phoneWidth/300),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Theme.of(context).colorScheme.background
+                      ),
+                      child: Icon(
+                        Icons.image, 
+                        size: phoneWidth/18, 
+                        color: Theme.of(context).colorScheme.inversePrimary,
+                      )
+                    ),
                   );
-                },
-                child: Container(
-                  padding: EdgeInsets.all(phoneWidth/300),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5),
-                    color: Theme.of(context).colorScheme.background
-                  ),
-                  child: Icon(
-                    Icons.image, 
-                    size: phoneWidth/18, 
-                    color: Theme.of(context).colorScheme.inversePrimary,
-                  )
-                ),
+                }
               ),
             )
           ],
@@ -306,44 +359,41 @@ class _DetailScrenState extends State<DetailScren> {
                       color: Theme.of(context).colorScheme.inversePrimary)),
               borderRadius: BorderRadius.circular(10))
           : const BoxDecoration(),
-      child: TextField(
-        readOnly: task.isDone? true : false,
-        controller: controller,
-        onChanged: (value) {
-          setState(() {
-            if (whichController == 'name') {
-              _nameController.text = value;
-            } else if (whichController == 'description') {
-              _descriptionController.text = value;
-            }
-          });
-          if (_nameController.text != task.name ||
-              _descriptionController.text != task.description) {
-            BlocProvider.of<EditTaskCubit>(context).upForChange(true, task);
-          } else {
-            BlocProvider.of<EditTaskCubit>(context).upForChange(false, task);
-          }
-        },
-        maxLines: whichController == 'name' ? 1 : null,
-        style: TextStyle(
-            decoration:
-                task.isDone ? TextDecoration.lineThrough : TextDecoration.none,
-            decorationColor: Theme.of(context).colorScheme.inversePrimary,
-            fontSize:
-                whichController == 'name' ? phoneWidth /20 : phoneWidth / 30,
-            fontWeight:
-                whichController == 'name' ? FontWeight.w900 : FontWeight.w300,
-            shadows: List.generate(10, (index) {
-              return Shadow(
-                  color: Theme.of(context).colorScheme.background,
-                  blurRadius: phoneWidth / 60);
-            })),
-        decoration: InputDecoration(
-          hintText: whichController,
-          border: const OutlineInputBorder(borderSide: BorderSide.none),
-          contentPadding: EdgeInsets.symmetric(
-              vertical: phoneWidth / 25, horizontal: phoneWidth / 40),
-        ),
+      child: BlocBuilder<EditTaskCubit, EditTaskState>(
+        builder: (context, state) {
+          return TextField(
+            readOnly: widget.task.isDone? true : false,
+            controller: controller,
+            onChanged: (value) {
+              if (whichController == 'name') {
+                _nameController.text = value;
+              } else if (whichController == 'description') {
+                _descriptionController.text = value;
+              }
+              checkIfAnythingChanges(state.task);
+            },
+            maxLines: whichController == 'name' ? 1 : null,
+            style: TextStyle(
+                decoration:
+                    widget.task.isDone ? TextDecoration.lineThrough : TextDecoration.none,
+                decorationColor: Theme.of(context).colorScheme.inversePrimary,
+                fontSize:
+                    whichController == 'name' ? phoneWidth /20 : phoneWidth / 30,
+                fontWeight:
+                    whichController == 'name' ? FontWeight.w900 : FontWeight.w300,
+                shadows: List.generate(10, (index) {
+                  return Shadow(
+                      color: Theme.of(context).colorScheme.background,
+                      blurRadius: phoneWidth / 60);
+                })),
+            decoration: InputDecoration(
+              hintText: whichController,
+              border: const OutlineInputBorder(borderSide: BorderSide.none),
+              contentPadding: EdgeInsets.symmetric(
+                  vertical: phoneWidth / 25, horizontal: phoneWidth / 40),
+            ),
+          );
+        }
       ),
     );
   }
@@ -362,7 +412,7 @@ class _DetailScrenState extends State<DetailScren> {
                   child: Text(
                     label,
                     style: TextStyle(
-                        decoration: task.isDone? TextDecoration.lineThrough : TextDecoration.none,
+                        decoration: widget.task.isDone? TextDecoration.lineThrough : TextDecoration.none,
                         decorationColor: Theme.of(context).colorScheme.inversePrimary,
                         fontSize: phoneWidth/35,
                         fontWeight: FontWeight.bold,
@@ -398,9 +448,9 @@ class _DetailScrenState extends State<DetailScren> {
           Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                task.category,
-                DateFormat('MMMM, EEEE dd yyy').format(task.starts),
-                DateFormat('MMMM, EEEE dd yyy').format(task.ends),
+                _categoryController,
+                DateFormat('MMMM, EEEE dd yyy').format(_startsController.time!),
+                DateFormat('MMMM, EEEE dd yyy').format(_endsController.time!),
               ].map((value) {
                 return BlocBuilder<EditTaskCubit, EditTaskState>(
                   builder: (context, state) {
@@ -408,28 +458,30 @@ class _DetailScrenState extends State<DetailScren> {
                       padding: EdgeInsets.symmetric(vertical: phoneWidth / 50),
                       child: GestureDetector(
                         onTap: () {
-                          if (value == task.category) {
+                          if (value is CategoryController) {
                             chooseCategory(phoneWidth);
                           } else if (value ==
                               DateFormat('MMMM, EEEE dd yyy')
-                                  .format(task.starts) && state.task.category != 'Daily') {
-                            ShowDatePicker(context, task.starts, 'starts',
-                                task.starts, state);
+                                  .format(_startsController.time!) && _categoryController.text != 'Daily') {
+                            ShowDatePicker(context, _startsController.time!, 'starts',
+                                _startsController.time!, state);
                           } else if (value ==
                               DateFormat('MMMM, EEEE dd yyy')
-                                  .format(task.ends) && state.task.category != 'Daily') {
+                                  .format(_endsController.time!) && _categoryController.text != 'Daily') {
                             ShowDatePicker(
-                                context, task.ends, 'ends', task.starts, state);
+                                context, _endsController.time!, 'ends', _startsController.time!, state);
                           } else {
                             alertToUser("Daily task's time are set to default");
                           }
                         },
                         child: Text(
-                          state.task.category == 'Daily'
-                            ? (value == 'Daily'? value : '~ ~  D E F A U L T  ~ ~')
-                            : (value == ''? '~~~' : value),
+                          _categoryController.text == 'Daily'
+                            ? (value is CategoryController? _categoryController.text : '~ ~  D E F A U L T  ~ ~').toString()
+                            : (value is CategoryController
+                                ? _categoryController.text == ''? '~~~' : _categoryController.text
+                                : value).toString(),
                           style: TextStyle(
-                            decoration: task.isDone? TextDecoration.lineThrough : TextDecoration.none,
+                            decoration: widget.task.isDone? TextDecoration.lineThrough : TextDecoration.none,
                             decorationColor: Theme.of(context).colorScheme.inversePrimary,
                             fontSize: phoneWidth/35,
                               fontWeight: FontWeight.bold,
@@ -457,14 +509,14 @@ class _DetailScrenState extends State<DetailScren> {
       builder: (context, state) {
         if (state.task.isDone == true){
           waitingFor = 'ENDED';
-        } else if(DateTime.now().isBefore(state.task.starts) && state.task.isDone == false) {
-          timesLeft = state.task.starts.difference(DateTime.now()).inMinutes;
+        } else if(DateTime.now().isBefore(_startsController.time!) && state.task.isDone == false) {
+          timesLeft = _startsController.time!.difference(DateTime.now()).inMinutes;
           waitingFor = 'STARTS';
-        } else if (DateTime.now().isAfter(state.task.starts) && DateTime.now().isBefore(state.task.ends) && state.task.isDone == false)  {
-          timesLeft = state.task.ends.difference(DateTime.now()).inMinutes;
+        } else if (DateTime.now().isAfter(_startsController.time!) && DateTime.now().isBefore(_endsController.time!) && state.task.isDone == false)  {
+          timesLeft = _endsController.time!.difference(DateTime.now()).inMinutes;
           waitingFor = 'ENDS';
-        } else if (DateTime.now().isAfter(state.task.ends)){
-          timesLeft = DateTime.now().difference(state.task.ends).inMinutes;
+        } else if (DateTime.now().isAfter(_endsController.time!)){
+          timesLeft = DateTime.now().difference(_endsController.time!).inMinutes;
           waitingFor = 'LATE';
         }
         return Column(
@@ -516,8 +568,8 @@ class _DetailScrenState extends State<DetailScren> {
                         MaterialButton(
                           padding: EdgeInsets.all(phoneWidth/100),
                           onPressed: () {
-                            BlocProvider.of<HistoryCubit>(context).deleteTask(task.name, task.id);
-                            taskList.removeWhere((targetedTask) => targetedTask.id == task.id);
+                            BlocProvider.of<HistoryCubit>(context).deleteTask(widget.task.name, widget.task.id);
+                            taskList.removeWhere((targetedTask) => targetedTask.id == widget.task.id);
                             BlocProvider.of<TaskListCubit>(context).refreshTaskList();
                             BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
                             BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
@@ -550,7 +602,7 @@ class _DetailScrenState extends State<DetailScren> {
                     child: Container(
                         margin: EdgeInsets.symmetric(horizontal: phoneWidth / 20),
                         child: Visibility(
-                          visible: !task.isDone,
+                          visible: !widget.task.isDone,
                           child: ActionSlider.standard(
                             sliderBehavior: SliderBehavior.stretch,
                             direction: ui.TextDirection.rtl,
@@ -576,7 +628,7 @@ class _DetailScrenState extends State<DetailScren> {
                             ),
                             action: (controller) async {
                               controller.loading(); 
-                              int targetedIndex = taskList.indexOf(task);
+                              int targetedIndex = taskList.indexOf(widget.task);
                               taskList[targetedIndex] = Task(
                                   id: state.task.id,
                                   name: state.task.name,
@@ -588,7 +640,7 @@ class _DetailScrenState extends State<DetailScren> {
                                   category: state.task.category,
                                   imagesRelated: state.task.imagesRelated);
                               BlocProvider.of<HistoryCubit>(context)
-                                  .finishTask(state.task.name, task.id);
+                                  .finishTask(state.task.name, widget.task.id);
                               BlocProvider.of<TaskListCubit>(context).refreshTaskList();
                               BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
                               BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
@@ -615,7 +667,7 @@ class _DetailScrenState extends State<DetailScren> {
   }
 
   void chooseCategory(double phoneWidth) {
-    if (!task.isDone) {
+    if (!widget.task.isDone) {
       showDialog(
         context: context,
         builder: (context) {
@@ -648,10 +700,8 @@ class _DetailScrenState extends State<DetailScren> {
                       items: allCategory,
                       onChanged: (value) {
                         setState(() {
-                          task.category = value;
-                          editTaskState.task.category = value;
-                          BlocProvider.of<EditTaskCubit>(context)
-                              .upForChange(true, editTaskState.task);
+                          _categoryController.text = value;
+                          checkIfAnythingChanges(editTaskState.task);
                         });
                       },
                     );
@@ -665,7 +715,7 @@ class _DetailScrenState extends State<DetailScren> {
   }
 
   void ShowDatePicker(context, DateTime date, String whichDate,DateTime taskStartsAt, EditTaskState originalTask) {
-    if (!task.isDone) {
+    if (!widget.task.isDone) {
       showDatePicker(
         context: context,
         initialDate: date,
@@ -676,13 +726,13 @@ class _DetailScrenState extends State<DetailScren> {
       ).then((result) {
         setState(() {
           if (whichDate == 'ends') {
-            task.ends = result!;
+            _endsController.time = result!;
           } else if (whichDate == 'starts') {
-            task.starts = result!;
-            task.ends = result.add(const Duration(days: 1));
+            _startsController.time = result!;
+            _endsController.time = result.add(const Duration(days: 1));
           }
         });
-        BlocProvider.of<EditTaskCubit>(context).upForChange(true, originalTask.task);
+        checkIfAnythingChanges(originalTask.task);
       });
     }
   }

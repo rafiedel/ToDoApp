@@ -15,8 +15,8 @@ import 'package:todoapp/logic/task_list_cubit.dart';
 import 'package:todoapp/utils/view_images.dart';
 
 class ImagesRelatedScreen extends StatelessWidget {
-  final Task whichTask;
-  const ImagesRelatedScreen({Key? key, required this.whichTask}) : super(key: key);
+  final EditTaskState currentEditTaskState;
+  const ImagesRelatedScreen({Key? key, required this.currentEditTaskState}) : super(key: key);
 
   Future<void> pickImage(Task task, BuildContext context, ImageSource pickedImageSource) async {
     final picker = ImagePicker();
@@ -28,12 +28,13 @@ class ImagesRelatedScreen extends StatelessWidget {
         Uint8List imgBytes = await imgCropped.readAsBytes();
         String imgStrings = String.fromCharCodes(imgBytes);
 
-        task.imagesRelated.add(imgStrings);
+        int targetedIndex = taskList.indexWhere((targetedTask) => targetedTask.id == task.id);
+        taskList[targetedIndex].imagesRelated.add(imgStrings);
 
         BlocProvider.of<TaskListCubit>(context).refreshTaskList(); 
         BlocProvider.of<HistoryCubit>(context).updateTask(task.name, task.id);
         BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
-        BlocProvider.of<EditTaskCubit>(context).initTask(task);
+        BlocProvider.of<EditTaskCubit>(context).upForChange(currentEditTaskState.hasChange, taskList[targetedIndex]);
       } else {
         
       }
@@ -60,7 +61,7 @@ class ImagesRelatedScreen extends StatelessWidget {
               bottomRight: Radius.circular(40)
             )
           ),
-          backgroundColor: whichTask.isTopPriority
+          backgroundColor: currentEditTaskState.task.isTopPriority
               ? (Theme.of(context).colorScheme.background == Colors.grey.shade900
                   ? const Color.fromARGB(255, 148, 44, 37)
                   : const Color.fromARGB(255, 253, 72, 59))
@@ -81,13 +82,13 @@ class ImagesRelatedScreen extends StatelessWidget {
               ),
             ),
           ),
-          title: Text(whichTask.name, style: TextStyle(fontSize: phoneWidth/20),),
+          title: Text(currentEditTaskState.task.name, style: TextStyle(fontSize: phoneWidth/20),),
           centerTitle: true,
         ),
         body: BlocBuilder<TaskListCubit, TaskListState>(
           builder: (context, state) {
             Task task =
-                state.taskList.singleWhere((task) => task.id == whichTask.id);
+                state.taskList.singleWhere((task) => task.id == currentEditTaskState.task.id);
             List<String> imagesRelated = task.imagesRelated;
             return SingleChildScrollView(
               child: Column(
@@ -202,7 +203,7 @@ class ImagesRelatedScreen extends StatelessWidget {
                                         BlocProvider.of<TaskListCubit>(context).refreshTaskList();
                                         BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
                                         BlocProvider.of<HistoryCubit>(context).updateTask(newTask.name, newTask.id);
-                                        BlocProvider.of<EditTaskCubit>(context).initTask(newTask);
+                                        BlocProvider.of<EditTaskCubit>(context).upForChange(currentEditTaskState.hasChange, taskList[targetedIndex]);
                                       }
                                     },
                                     itemBuilder: (context) => [
