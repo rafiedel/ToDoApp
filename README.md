@@ -38,7 +38,7 @@
   - Local database
   - No internet needed
 
-#NOTE : Upon the initial launch, users will find sample tasks preloaded into the app. Please note that these sample tasks are provided solely for demonstration purposes. Should users wish to use the app for their personal task management, we kindly ask for their understanding as they'll need to remove these tasks individually. We apologize for any inconvenience this may cause. 🙏🏻
+#NOTE : Upon the initial launch, users will find sample tasks preloaded into the app. Please note that these sample tasks are provided solely for demonstration purposes. If users wish to use the app for their personal task management, I kindly ask for their understanding as they'll need to remove these tasks individually. I apologize for any inconvenience this may cause. 🙏🏻
 
 
 ## Third Party Packages Dependencies & Development Dependencies:
