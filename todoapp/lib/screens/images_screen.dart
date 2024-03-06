@@ -100,7 +100,7 @@ class ImagesRelatedScreen extends StatelessWidget {
                       (index) {
                         return GestureDetector(
                           onTap: () {
-                            if (!task.isDone) {
+                            if (!task.isDone || task.category == 'Daily') {
                               if (index == imagesRelated.length) {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -174,8 +174,8 @@ class ImagesRelatedScreen extends StatelessWidget {
                                           : null,
                                       color: Theme.of(context).colorScheme.secondary),
                                   child: index == imagesRelated.length
-                                      ? task.isDone
-                                        ? const Expanded(child: Center(child: Text('FINISHED TASK', maxLines: null,)))
+                                      ? task.isDone && task.category != 'Daily'
+                                        ? Center(child: Text('FINISHED TASK', maxLines: null, style: TextStyle(fontSize: phoneWidth/30),))
                                         : Icon(
                                             Icons.add,
                                             size: phoneWidth / 10,

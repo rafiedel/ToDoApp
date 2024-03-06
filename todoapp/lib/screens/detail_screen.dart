@@ -520,6 +520,7 @@ class _DetailScrenState extends State<DetailScren> {
     return BlocBuilder<EditTaskCubit, EditTaskState>(
       builder: (context, state) {
         if (state.task.isDone == true){
+          timesLeft = 0;
           waitingFor = 'E N D E D';
         } else if(DateTime.now().isBefore(_startsController.time!) && state.task.isDone == false) {
           timesLeft = _startsController.time!.difference(DateTime.now()).inMinutes;
