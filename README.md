@@ -21,21 +21,24 @@
   - View ongoing and upcoming tasks.
   - Calendar table to search for tasks.
   - Detail screen of every task
+  - Screen of images in every task
   - Create task sheet
-  - About me screen in end drawer
+  - About me screen (the developer)
 
 - **User Identity and Preferences:**
-  - Home top bar background.
-  - Profile picture.
-  - Display name.
-  - Brightness theme.
+  - Home top bar background
+  - Profile picture
+  - Display name
+  - Brightness theme
   - Manage Daily Task
-  - Summary of tasks.
-  - History of user activity.
+  - Summary of tasks (finished, not yet, and late)
+  - History of user activity
 
 - **Specifications:**
   - Local database
   - No internet needed
+
+#NOTE : Upon the initial launch, users will find sample tasks preloaded into the app. Please note that these sample tasks are provided solely for demonstration purposes. Should users wish to use the app for their personal task management, we kindly ask for their understanding as they'll need to remove these tasks individually. We apologize for any inconvenience this may cause. 🙏🏻
 
 
 ## Third Party Packages Dependencies & Development Dependencies:
