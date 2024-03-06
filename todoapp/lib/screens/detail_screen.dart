@@ -137,28 +137,40 @@ class _DetailScrenState extends State<DetailScren> {
               end: Alignment.bottomCenter,
               colors: Theme.of(context).colorScheme.background ==
                       Colors.grey.shade900
-                  ? state.task.isTopPriority
+                  ? state.task.category == 'Daily'
                       ? ([
-                          const Color.fromARGB(255, 116, 8, 0),
-                          const Color.fromARGB(255, 193, 29, 17),
-                          Colors.red,
+                          Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
+                          Theme.of(context).colorScheme.inversePrimary.withOpacity(0.3),
+                          Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
                         ])
-                      : ([
-                          const Color.fromARGB(255, 0, 51, 93),
-                          const Color.fromARGB(255, 17, 106, 180),
-                          const Color.fromARGB(255, 0, 140, 255),
-                        ])
-                  : state.task.isTopPriority
+                      : state.task.isTopPriority
+                        ? ([
+                            const Color.fromARGB(255, 116, 8, 0),
+                            const Color.fromARGB(255, 193, 29, 17),
+                            Colors.red,
+                          ])
+                        : ([
+                            const Color.fromARGB(255, 0, 51, 93),
+                            const Color.fromARGB(255, 17, 106, 180),
+                            const Color.fromARGB(255, 0, 140, 255),
+                          ])
+                  : state.task.category == 'Daily'
                       ? ([
-                          const Color.fromARGB(255, 230, 104, 95),
-                          const Color.fromARGB(255, 186, 52, 42),
-                          const Color.fromARGB(255, 184, 21, 9),
+                          Theme.of(context).colorScheme.inversePrimary.withOpacity(0.1),
+                          Theme.of(context).colorScheme.inversePrimary.withOpacity(0.3),
+                          Theme.of(context).colorScheme.inversePrimary.withOpacity(0.5),
                         ])
-                      : ([
-                          const Color.fromARGB(255, 88, 163, 225),
-                          const Color.fromARGB(255, 17, 123, 209),
-                          const Color.fromARGB(255, 6, 102, 180),
-                        ]),
+                      : state.task.isTopPriority
+                        ? ([
+                            const Color.fromARGB(255, 230, 104, 95),
+                            const Color.fromARGB(255, 186, 52, 42),
+                            const Color.fromARGB(255, 184, 21, 9),
+                          ])
+                        : ([
+                            const Color.fromARGB(255, 88, 163, 225),
+                            const Color.fromARGB(255, 17, 123, 209),
+                            const Color.fromARGB(255, 6, 102, 180),
+                          ]),
               stops: [
                 Theme.of(context).colorScheme.background == Colors.grey.shade900
                     ? 0.0
