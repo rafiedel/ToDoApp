@@ -508,23 +508,25 @@ class _DetailScrenState extends State<DetailScren> {
     return BlocBuilder<EditTaskCubit, EditTaskState>(
       builder: (context, state) {
         if (state.task.isDone == true){
-          waitingFor = 'ENDED';
+          waitingFor = 'E N D E D';
         } else if(DateTime.now().isBefore(_startsController.time!) && state.task.isDone == false) {
           timesLeft = _startsController.time!.difference(DateTime.now()).inMinutes;
-          waitingFor = 'STARTS';
+          waitingFor = 'S T A R T S';
         } else if (DateTime.now().isAfter(_startsController.time!) && DateTime.now().isBefore(_endsController.time!) && state.task.isDone == false)  {
           timesLeft = _endsController.time!.difference(DateTime.now()).inMinutes;
-          waitingFor = 'ENDS';
+          waitingFor = 'E N D S';
         } else if (DateTime.now().isAfter(_endsController.time!)){
           timesLeft = DateTime.now().difference(_endsController.time!).inMinutes;
-          waitingFor = 'LATE';
+          waitingFor = 'L A T E';
         }
         return Column(
           children: <Widget>[
             Text(
               waitingFor,
               style: TextStyle(
-                  letterSpacing: phoneWidth / 25, fontWeight: FontWeight.bold),
+                   fontSize: phoneWidth/30,
+                   letterSpacing: phoneWidth/100,
+                   fontWeight: FontWeight.bold),
             ),
             waitingFor != 'ENDED'
                 ? SlideCountdownSeparated(
