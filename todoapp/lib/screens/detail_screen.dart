@@ -205,94 +205,92 @@ class _DetailScrenState extends State<DetailScren> {
                       ),
                     ),
                   ),
-                  !widget.task.isDone || widget.task.category == 'Daily'
-                      ? Row(
-                          children: [
-                            Padding(
-                              padding: EdgeInsets.only(right: phoneWidth / 20),
-                              child: Visibility(
-                                visible: !state.hasChange,
-                                child: GestureDetector(
-                                  onTap: () =>
-                                      Scaffold.of(context).openEndDrawer(),
-                                  child: Icon(
-                                    Icons.density_medium_outlined,
-                                    size: phoneWidth / 22.5,
-                                  ),
-                                ),
-                              ),
+                  Row(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(right: phoneWidth / 20),
+                        child: Visibility(
+                          visible: !state.hasChange,
+                          child: GestureDetector(
+                            onTap: () =>
+                                Scaffold.of(context).openEndDrawer(),
+                            child: Icon(
+                              Icons.density_medium_outlined,
+                              size: phoneWidth / 22.5,
                             ),
-                            Padding(
-                              padding: EdgeInsets.only(right: phoneWidth / 20),
-                              child: Visibility(
-                                visible: state.hasChange,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    if (_nameController.text.isNotEmpty) {
-                                      int targetedIndex = taskList.indexWhere(
-                                          (checkTask) =>
-                                              checkTask.id == widget.task.id);
-                                      BlocProvider.of<HistoryCubit>(context)
-                                          .updateTask(widget.task.name, widget.task.id);
-                                      if (_categoryController.text == 'Daily') {
-                                        _startsController.time = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
-                                        _endsController.time = _startsController.time!.add(const Duration(days: 1));
-                                      }
-                                      taskList[targetedIndex] = Task(
-                                          id: widget.task.id,
-                                          name: _nameController.text,
-                                          description:
-                                              _descriptionController.text,
-                                          isDone: state.task.isDone,
-                                          isTopPriority: state.task.isTopPriority,
-                                          starts: _startsController.time!,
-                                          ends: _endsController.time!,
-                                          category: _categoryController.text!,
-                                          imagesRelated: state.task.imagesRelated);
-                                      BlocProvider.of<EditTaskCubit>(context)
-                                          .upForChange(
-                                              false, taskList[targetedIndex]);
-                                      BlocProvider.of<TaskListCubit>(context)
-                                          .refreshTaskList();
-                                      BlocProvider.of<SearchTaskCubit>(
-                                              context)
-                                          .refreshTaskList();
-                                      BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
-                                    } else {
-                                      alertToUser('NAME MUST BE FILL !');
-                                    }
-                                  },
-                                  child: Container(
-                                      padding: EdgeInsets.symmetric(horizontal: phoneWidth/30, vertical: phoneWidth/50),
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(10),
-                                        color: Colors.green.withOpacity(0.75),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(right: phoneWidth / 20),
+                        child: Visibility(
+                          visible: state.hasChange,
+                          child: GestureDetector(
+                            onTap: () {
+                              if (_nameController.text.isNotEmpty) {
+                                int targetedIndex = taskList.indexWhere(
+                                    (checkTask) =>
+                                        checkTask.id == widget.task.id);
+                                BlocProvider.of<HistoryCubit>(context)
+                                    .updateTask(widget.task.name, widget.task.id);
+                                if (_categoryController.text == 'Daily') {
+                                  _startsController.time = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day);
+                                  _endsController.time = _startsController.time!.add(const Duration(days: 1));
+                                }
+                                taskList[targetedIndex] = Task(
+                                    id: widget.task.id,
+                                    name: _nameController.text,
+                                    description:
+                                        _descriptionController.text,
+                                    isDone: state.task.isDone,
+                                    isTopPriority: state.task.isTopPriority,
+                                    starts: _startsController.time!,
+                                    ends: _endsController.time!,
+                                    category: _categoryController.text!,
+                                    imagesRelated: state.task.imagesRelated);
+                                BlocProvider.of<EditTaskCubit>(context)
+                                    .upForChange(
+                                        false, taskList[targetedIndex]);
+                                BlocProvider.of<TaskListCubit>(context)
+                                    .refreshTaskList();
+                                BlocProvider.of<SearchTaskCubit>(
+                                        context)
+                                    .refreshTaskList();
+                                BlocProvider.of<ReOrderDailyTaskCubit>(context).refreshDailyTaskOrder();
+                              } else {
+                                alertToUser('NAME MUST BE FILL !');
+                              }
+                            },
+                            child: Container(
+                                padding: EdgeInsets.symmetric(horizontal: phoneWidth/30, vertical: phoneWidth/50),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(10),
+                                  color: Colors.green.withOpacity(0.75),
+                                ),
+                                child: Row(
+                                  children: <Widget>[
+                                    Text(
+                                      'SAVE',
+                                      style: TextStyle(
+                                        fontSize: phoneWidth / 40,
+                                        fontWeight: FontWeight.w900,
+                                        letterSpacing: phoneWidth / 100,
                                       ),
-                                      child: Row(
-                                        children: <Widget>[
-                                          Text(
-                                            'SAVE',
-                                            style: TextStyle(
-                                              fontSize: phoneWidth / 40,
-                                              fontWeight: FontWeight.w900,
-                                              letterSpacing: phoneWidth / 100,
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: phoneWidth / 100,
-                                          ),
-                                          Icon(
-                                            Icons.save,
-                                            size: phoneWidth / 30,
-                                          ),
-                                        ],
-                                      )),
-                                ),
-                              ),
-                            ),
-                          ],
-                        )
-                      : const SizedBox.shrink(),
+                                    ),
+                                    SizedBox(
+                                      width: phoneWidth / 100,
+                                    ),
+                                    Icon(
+                                      Icons.save,
+                                      size: phoneWidth / 30,
+                                    ),
+                                  ],
+                                )),
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ],
