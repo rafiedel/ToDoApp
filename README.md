@@ -20,8 +20,8 @@
 - **App Sections:**
   - View ongoing and upcoming tasks.
   - Calendar table to search for tasks.
-  - Detail screen of every task
-  - Screen of images in every task
+  - Detail screen for every task
+  - Screen of images for every task
   - Create task sheet
   - About me screen (the developer)
 
@@ -38,7 +38,7 @@
   - Local database
   - No internet needed
 
-#NOTE : Upon the initial launch, users will find sample tasks preloaded into the app. Please note that these sample tasks are provided solely for demonstration purposes. If users wish to use the app for their personal task management, I kindly ask for their understanding as they'll need to remove these tasks individually. I apologize for any inconvenience this may cause. 🙏🏻
+#NOTE : At the first launch, users will find sample tasks preloaded into the app. Please note that these sample tasks are provided for demonstration purposes. If users wish to use the app for their personal task management, I kindly ask for their understanding as they'll need to remove these tasks individually. I apologize for any inconvenience this may cause. 🙏🏻
 
 
 ## Third Party Packages Dependencies & Development Dependencies:
