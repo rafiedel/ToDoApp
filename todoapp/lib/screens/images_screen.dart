@@ -61,13 +61,17 @@ class ImagesRelatedScreen extends StatelessWidget {
               bottomRight: Radius.circular(40)
             )
           ),
-          backgroundColor: currentEditTaskState.task.isTopPriority
-              ? (Theme.of(context).colorScheme.background == Colors.grey.shade900
-                  ? const Color.fromARGB(255, 148, 44, 37)
-                  : const Color.fromARGB(255, 253, 72, 59))
-              : (Theme.of(context).colorScheme.background == Colors.grey.shade900
-                  ? const Color.fromARGB(255, 21, 91, 149)
-                  : const Color.fromARGB(255, 91, 150, 199)),
+         backgroundColor: currentEditTaskState.task.category == 'Daily'
+            ? Theme.of(context).colorScheme.background == Colors.grey.shade900
+              ? Colors.grey.shade800
+              : Colors.grey.shade400
+            : currentEditTaskState.task.isTopPriority
+              ? Theme.of(context).colorScheme.background == Colors.grey.shade900
+                ? const Color.fromARGB(255, 148, 44, 37)
+                : const Color.fromARGB(255, 253, 72, 59)
+              : Theme.of(context).colorScheme.background == Colors.grey.shade900
+                ? const Color.fromARGB(255, 21, 91, 149)
+                : const Color.fromARGB(255, 91, 150, 199),
           leading: GestureDetector(
             onTap: () { 
               Navigator.pop(context);
