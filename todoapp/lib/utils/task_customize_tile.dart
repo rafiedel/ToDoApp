@@ -83,8 +83,7 @@ class TaskCustomizeTile extends StatelessWidget {
                             ),
                           ],
                         ),
-                        Container(
-                          width: phoneWidth / 1.25,
+                        Expanded(
                           child: Text(
                             task.description.isNotEmpty
                                 ? task.description

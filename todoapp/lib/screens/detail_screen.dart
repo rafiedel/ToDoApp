@@ -641,7 +641,7 @@ class _DetailScrenState extends State<DetailScren> {
                             ),
                             action: (controller) async {
                               controller.loading(); 
-                              int targetedIndex = taskList.indexOf(widget.task);
+                              int targetedIndex = taskList.indexWhere((task) => task.id == widget.task.id);
                               taskList[targetedIndex] = Task(
                                   id: state.task.id,
                                   name: state.task.name,

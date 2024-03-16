@@ -74,106 +74,113 @@ class _CreateTaskButton extends State<CreateTaskButton> {
       builder: (context, state) {
         double phoneWidth = MediaQuery.of(context).size.width;
         double phoneHeight = MediaQuery.of(context).size.height;
+        // Automatic scrolls down
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          scrollController.animateTo(
+            scrollController.position.maxScrollExtent,
+            duration: const Duration(milliseconds: 1500),
+            curve: Curves.fastOutSlowIn,
+          );
+        });
         return SingleChildScrollView(
           controller: scrollController,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(
-                  height: phoneHeight / 5,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Text(
-                        "Create New Task",
-                        style: TextStyle(
-                            fontSize: phoneWidth / 17.5,
-                            fontWeight: FontWeight.bold),
-                      ),
-                      SizedBox(
-                        height: phoneWidth / 10,
-                      )
-                    ],
-                  ),
+          child: Column(
+            children: [
+              SizedBox(
+                height: phoneHeight / 5,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Text(
+                      "Create New Task",
+                      style: TextStyle(
+                          fontSize: phoneWidth / 17.5,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    SizedBox(
+                      height: phoneWidth / 10,
+                    )
+                  ],
                 ),
-                Container(
-                  height: phoneHeight/1.225,
-                  decoration: BoxDecoration(
-                      color:
-                          Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(30),
-                          topRight: Radius.circular(30))),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: <Widget>[
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                            height: phoneWidth / 20,
-                          ),
-                          DateSection(),
-                          SizedBox(
-                            height: phoneWidth / 80,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              ),
+              Container(
+                // height: phoneHeight,
+                decoration: BoxDecoration(
+                    color:
+                        Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
+                    borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30))),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: phoneWidth / 20,
+                        ),
+                        DateSection(),
+                        SizedBox(
+                          height: phoneWidth / 80,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: <Widget>[
+                            SectionLabel('Category'),
+                            Row(
+                              children: [
+                                CreateNewCategoryButton(),
+                                ToggleCategorySwitch(),
+                              ],
+                            )
+                          ],
+                        ),
+                        CategorySection(),
+                        SizedBox(
+                          height: phoneWidth/25,
+                        ),
+                        SectionLabel('Name'),
+                        MyTextField(_nameController, 1, 'name'),
+                        SizedBox(
+                          height: phoneWidth / 20,
+                        ),
+                        SectionLabel('Description'),
+                        MyTextField(_descriptionController, 5, 'description'),
+                        SizedBox(
+                          height: phoneWidth / 20,
+                        ),
+                        Visibility(
+                          visible: state.newTask.category != 'Daily',
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
                             children: <Widget>[
-                              SectionLabel('Category'),
-                              Row(
-                                children: [
-                                  CreateNewCategoryButton(),
-                                  ToggleCategorySwitch(),
-                                ],
-                              )
+                              SectionLabel('Top Priority?'),
+                              Switch(
+                                inactiveTrackColor: Colors.blue,
+                                activeColor: Colors.red,
+                                value: state.newTask.isTopPriority, 
+                                onChanged: (value) {
+                                  BlocProvider.of<CreateTaskCubit>(context).setTopPriority(!state.newTask.isTopPriority);
+                                }
+                              ),
+                              SizedBox(width: phoneWidth/30,)
                             ],
                           ),
-                          CategorySection(),
-                          SizedBox(
-                            height: phoneWidth/25,
-                          ),
-                          SectionLabel('Name'),
-                          MyTextField(_nameController, 1, 'name'),
-                          SizedBox(
-                            height: phoneWidth / 20,
-                          ),
-                          SectionLabel('Description'),
-                          MyTextField(_descriptionController, 5, 'description'),
-                          SizedBox(
-                            height: phoneWidth / 20,
-                          ),
-                          Visibility(
-                            visible: state.newTask.category != 'Daily',
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: <Widget>[
-                                SectionLabel('Top Priority?'),
-                                Switch(
-                                  inactiveTrackColor: Colors.blue,
-                                  activeColor: Colors.red,
-                                  value: state.newTask.isTopPriority, 
-                                  onChanged: (value) {
-                                    BlocProvider.of<CreateTaskCubit>(context).setTopPriority(!state.newTask.isTopPriority);
-                                  }
-                                ),
-                                SizedBox(width: phoneWidth/30,)
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Column(
-                        children: [
-                          FormButton(),
-                          SizedBox(height: phoneWidth/15)
-                        ],
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: phoneHeight/20,),
+                    Column(
+                      children: [
+                        FormButton(),
+                        SizedBox(height: phoneWidth/30)
+                      ],
+                    )
+                  ],
+                ),
+              )
+            ],
           ),
         );
       },

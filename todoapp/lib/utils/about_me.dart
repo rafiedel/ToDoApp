@@ -85,22 +85,29 @@ class _AboutMeState extends State<AboutMe> with TickerProviderStateMixin {
               ],
             ),
             Container(
-              margin: EdgeInsets.symmetric(vertical: phoneWidth/1.5, horizontal: phoneWidth/5),
               decoration: BoxDecoration(
                 color: Colors.black.withOpacity(0.1),
-                border: Border.all(color: Colors.white.withOpacity(0.4)),
-                borderRadius: BorderRadius.circular(10)
               ),
               child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    RafiePP(phoneWidth),
-                    Name(phoneWidth),
-                    Major(phoneWidth),
-                    Born(phoneWidth),
-                    Email(phoneWidth)
-                  ],
+                child: Container(
+                  padding: EdgeInsets.all(phoneWidth/20),
+                  decoration: BoxDecoration(
+                    color: Colors.black.withOpacity(0.1),
+                    border: Border.all(color: Colors.white.withOpacity(0.4)),
+                    borderRadius: BorderRadius.circular(10)
+                  ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        RafiePP(phoneWidth),
+                        Name(phoneWidth),
+                        Major(phoneWidth),
+                        Born(phoneWidth),
+                        Email(phoneWidth)
+                      ],
+                    ),
+                  ),
                 ),
               ),
             )
