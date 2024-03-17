@@ -3,6 +3,7 @@
 ## Introduction 🚀
 
 This mobile application was built as an assignment for the 2024 Fasilkom UI Ristek MobDev SIG Oprec.
+
 At the first launch, users will find sample tasks preloaded into the app. Please note that these sample tasks are provided for demonstration purposes.
 
 ## Features ✨
