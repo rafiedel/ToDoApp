@@ -20,24 +20,30 @@ class ImagesRelatedScreen extends StatelessWidget {
 
   Future<void> pickImage(Task task, BuildContext context, ImageSource pickedImageSource) async {
     final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: pickedImageSource);
-    if (pickedFile != null) {
-      File imgFile = File(pickedFile.path);
-      File? imgCropped = await cropImage(imageFile: imgFile);
-      if (imgCropped != null) {
-        Uint8List imgBytes = await imgCropped.readAsBytes();
-        String imgStrings = String.fromCharCodes(imgBytes);
+    // final pickedFile = await picker.pickImage(source: pickedImageSource);
+    List pickedFiles = [];
+    if (pickedImageSource == ImageSource.camera) {
+      pickedFiles.add(await picker.pickImage(source: pickedImageSource));
+    } else {
+      pickedFiles = await picker.pickMultiImage();
+    }
+    if (pickedFiles.isNotEmpty) {
+      for (XFile pickedFile in pickedFiles) {
+        File imgFile = File(pickedFile.path);
+        File? imgCropped = await cropImage(imageFile: imgFile);
+        if (imgCropped != null) {
+          Uint8List imgBytes = await imgCropped.readAsBytes();
+          String imgStrings = String.fromCharCodes(imgBytes);
 
-        int targetedIndex = taskList.indexWhere((targetedTask) => targetedTask.id == task.id);
-        taskList[targetedIndex].imagesRelated.add(imgStrings);
+          int targetedIndex = taskList.indexWhere((targetedTask) => targetedTask.id == task.id);
+          taskList[targetedIndex].imagesRelated.add(imgStrings);
 
-        BlocProvider.of<TaskListCubit>(context).refreshTaskList(); 
-        BlocProvider.of<HistoryCubit>(context).updateTask(task.name, task.id);
-        BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
-        BlocProvider.of<EditTaskCubit>(context).upForChange(currentEditTaskState.hasChange, taskList[targetedIndex]);
-      } else {
-        
-      }
+          BlocProvider.of<TaskListCubit>(context).refreshTaskList(); 
+          BlocProvider.of<HistoryCubit>(context).updateTask(task.name, task.id);
+          BlocProvider.of<SearchTaskCubit>(context).refreshTaskList();
+          BlocProvider.of<EditTaskCubit>(context).upForChange(currentEditTaskState.hasChange, taskList[targetedIndex]);
+        }
+      } 
     }
   }
 
