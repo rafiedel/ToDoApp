@@ -1,6 +1,7 @@
 # To Do App
-*_this mobile app was made for my 2024 Fasilkom UI Ristek MobDev SIG Oprec Assignment_*
 
+### Introduction:
+*_this mobile app was made for my 2024 Fasilkom UI Ristek MobDev SIG Oprec Assignment_*
 **_NOTE : At the first launch, users will find sample tasks preloaded into the app. Please note that these sample tasks are provided for demonstration purposes._**
 
 ## Features:
