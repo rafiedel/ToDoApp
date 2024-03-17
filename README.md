@@ -29,7 +29,7 @@ At the first launch, users will find sample tasks preloaded into the app. Please
   - Detail screen for every task
   - Screen of images for every task
   - Create task sheet
-  - About me screen **_(the developer)_**
+  - About me screen _(the developer)_
 
 - **User Identity and Preferences:**
   - Home top bar background
