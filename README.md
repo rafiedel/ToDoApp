@@ -1,10 +1,11 @@
-# To Do App
+# To Do App 📝
 
-### Introduction:
-*_this mobile app was made for my 2024 Fasilkom UI Ristek MobDev SIG Oprec Assignment_*
-**_NOTE : At the first launch, users will find sample tasks preloaded into the app. Please note that these sample tasks are provided for demonstration purposes._**
+## Introduction 🚀
 
-## Features:
+This mobile application was built as an assignment for the 2024 Fasilkom UI Ristek MobDev SIG Oprec.
+At the first launch, users will find sample tasks preloaded into the app. Please note that these sample tasks are provided for demonstration purposes.
+
+## Features ✨
 
 - **Basic Task Management:**
   - Create, edit, delete, and mark tasks as finished.
@@ -27,7 +28,7 @@
   - Detail screen for every task
   - Screen of images for every task
   - Create task sheet
-  - About me screen (the developer)
+  - About me screen **_(the developer)_**
 
 - **User Identity and Preferences:**
   - Home top bar background
@@ -44,7 +45,7 @@
 
 
 
-## Third Party Packages Dependencies & Development Dependencies:
+## Third Party Packages Dependencies & Development Dependencies 📦
 
 - flutter_bloc
 - google_nav_bar
